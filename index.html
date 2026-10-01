@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b63ce">
+<title>Reisebookinger – oversikt</title>
+<style>
+:root{
+  --blue:#0b63ce; --blue2:#eaf3ff; --green:#16834a; --green2:#eaf8f0;
+  --red:#c83b3b; --red2:#fff0f0; --text:#142033; --muted:#657184;
+  --bg:#f4f7fb; --card:#fff; --border:#dfe6ef; --shadow:0 6px 22px rgba(24,43,72,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text)}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,#0758bb,#1475df);color:#fff;padding:16px 16px 14px;box-shadow:0 2px 12px #0002}
+h1{font-size:22px;margin:0 0 3px}.sub{opacity:.86;font-size:13px}
+main{max-width:920px;margin:auto;padding:14px 12px 80px}
+.tabs{display:flex;background:#fff;border:1px solid var(--border);border-radius:14px;padding:4px;margin-bottom:12px;box-shadow:var(--shadow)}
+.tab{flex:1;border:0;background:transparent;color:var(--muted);padding:11px 10px;border-radius:10px;font-weight:800;font-size:14px}
+.tab.active{background:var(--blue);color:#fff}
+.chart-wrap{display:flex;justify-content:center;align-items:center;padding:10px 0}
+.pie{width:min(290px,78vw);height:min(290px,78vw);border-radius:50%;position:relative}
+.pie-center{position:absolute;inset:25%;border-radius:50%;background:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.legend{display:grid;gap:9px;margin-top:12px}.legend-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:7px}
+.transport-card{border:1px solid var(--border);background:#fff;border-radius:15px;padding:14px;margin-bottom:9px}
+.flight{background:#fff;border:1px solid var(--border);border-radius:15px;padding:14px;margin-bottom:9px;box-shadow:0 2px 9px #182b4808}
+.flight-route{display:flex;align-items:center;gap:8px;font-size:19px;font-weight:850}
+.flight-arrow{color:var(--blue)} .flight-price{font-size:17px;font-weight:850;white-space:nowrap}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.metric{font-size:25px;font-weight:800}.label{font-size:12px;color:var(--muted);margin-top:3px}
+.toolbar{display:flex;gap:8px;overflow:auto;padding:2px 0 12px}
+button,.filebtn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap}
+.primary{background:var(--blue);color:#fff}.secondary{background:#fff;border:1px solid var(--border);color:var(--text)}
+.danger{background:var(--red2);color:var(--red)}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 9px}
+h2{font-size:17px;margin:0}.small{font-size:12px;color:var(--muted)}
+.booking{position:relative;background:#fff;border:1px solid var(--border);border-radius:15px;padding:14px;margin-bottom:9px;box-shadow:0 2px 9px #182b4808}
+.booking-top{display:flex;justify-content:space-between;gap:10px}.name{font-weight:800;font-size:15px}.price{font-weight:800;white-space:nowrap}
+.dates{color:var(--blue);font-weight:700;margin:5px 0;font-size:14px}
+.meta{display:flex;gap:6px;flex-wrap:wrap}.pill{background:#f0f4f8;border-radius:999px;padding:5px 8px;font-size:12px;color:#435168}
+.actions{display:flex;gap:6px;margin-top:10px}.actions button{padding:7px 9px;font-size:12px}
+.gap{border:1px dashed #e1a2a2;background:var(--red2);border-radius:14px;padding:11px 13px;margin:8px 0;color:#8e2828}
+.gap strong{font-size:14px}.gap span{font-size:12px}
+.month{margin-bottom:12px}.monthhead{display:flex;justify-content:space-between;padding:10px 12px;background:#edf4fc;border-radius:12px;font-weight:800}
+.monthbody{padding-top:8px}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+.modal{position:fixed;inset:0;background:#07132288;display:none;align-items:flex-end;z-index:30}
+.modal.show{display:flex}.sheet{background:#fff;width:100%;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px}
+@media(min-width:700px){.modal{align-items:center;padding:20px}.sheet{max-width:650px;border-radius:20px}}
+label{display:block;font-size:12px;font-weight:700;color:#596579;margin:10px 0 5px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #ccd6e2;border-radius:11px;font:inherit;background:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.form-actions{display:flex;gap:8px;margin-top:15px}.form-actions>*{flex:1}
+.progress{height:8px;background:#e8edf4;border-radius:99px;overflow:hidden;margin:8px 0}.bar{height:100%;width:0;background:var(--blue);transition:width .2s}
+.drop{border:2px dashed #a9c5e8;border-radius:15px;padding:22px;text-align:center;background:#f7fbff}
+.drop.drag{background:#eaf3ff;border-color:var(--blue)}
+textarea{min-height:120px;resize:vertical}
+.note{font-size:12px;color:var(--muted);line-height:1.45}
+.hidden{display:none!important}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 5px;border-bottom:1px solid var(--border);text-align:left}th{color:var(--muted)}
+.badge-ok{color:var(--green);font-weight:800}.badge-gap{color:var(--red);font-weight:800}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b63ce">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Reisebookinger">
+</head>
+<body>
+<header>
+  <h1>✈️ Reisebookinger</h1>
+  <div class="sub">Bookinger · ledige netter · kostnad · prisnivå</div>
+</header>
+
+<main>
+  <div class="tabs">
+    <button id="stayTab" class="tab active" onclick="showTab('stays')">🏨 Overnatting</button>
+    <button id="flightTab" class="tab" onclick="showTab('flights')">✈️ Flyreiser</button>
+    <button id="transportTab" class="tab" onclick="showTab('transport')">🚗 Transport</button>
+    <button id="totalTab" class="tab" onclick="showTab('total')">📊 Totalt</button>
+  </div>
+  <section id="staysTab">
+  <div class="cards">
+    <div class="card"><div class="metric" id="totalCost">–</div><div class="label">Totalt booket</div></div>
+    <div class="card"><div class="metric" id="totalNights">–</div><div class="label">Bookede netter</div></div>
+    <div class="card"><div class="metric" id="gapNights">–</div><div class="label">Ledige netter mellom bookinger</div></div>
+    <div class="card"><div class="metric" id="avgNight">–</div><div class="label">Snittpris per natt</div></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="primary" onclick="openAdd()">＋ Ny booking</button>
+    <button class="secondary" onclick="openUpload()">📷 Last opp bookingbilder</button>
+    <button class="secondary" onclick="exportData()">⬇ Eksporter data</button>
+      <button class="secondary" onclick="document.getElementById('importFile').click()">⬆ Last opp data</button>
+    <label class="filebtn secondary" style="display:inline-block;margin:0">
+      <input id="importFile" type="file" accept=".json" hidden onchange="importData(this.files[0])">
+    </label>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div class="section-title" style="margin-top:0"><h2>Ledige perioder</h2><span class="small">beregnet mellom utsjekk og neste innsjekk</span></div>
+    <div id="gaps"></div>
+  </div>
+
+  <div class="section-title"><h2>Bookinger</h2><span class="small" id="countLabel"></span></div>
+  <div id="bookings"></div>
+</section>
+  <section id="flightsTab" class="hidden">
+    <div class="cards">
+      <div class="card"><div class="metric" id="flightCount">0</div><div class="label">Flyreiser</div></div>
+      <div class="card"><div class="metric" id="flightCost">0 kr</div><div class="label">Totalt fly</div></div>
+    </div>
+    <div class="toolbar"><button class="primary" onclick="openFlightAdd()">＋ Ny flyreise</button></div>
+    <div class="section-title"><h2>Flyreiser</h2><span class="small" id="flightCountLabel"></span></div>
+    <div id="flights"></div>
+  </section>
+
+  <section id="transportTabContent" class="hidden">
+    <div class="cards">
+      <div class="card"><div class="metric" id="transportCount">0</div><div class="label">Transportposter</div></div>
+      <div class="card"><div class="metric" id="transportCost">0 kr</div><div class="label">Totalt transport</div></div>
+    </div>
+    <div class="toolbar"><button class="primary" onclick="openTransportAdd()">＋ Ny transport</button></div>
+    <div class="section-title"><h2>Transport</h2><span class="small">Flyplass, taxi, ferge, buss, leiebil osv.</span></div>
+    <div id="transport"></div>
+  </section>
+
+  <section id="totalTabContent" class="hidden">
+    <div class="card">
+      <div class="section-title" style="margin-top:0"><h2>📊 Totalkostnader</h2><span class="small">overnatting + fly + transport</span></div>
+      <div class="chart-wrap"><div id="pieChart" class="pie"><div class="pie-center"><strong id="grandTotal">0 kr</strong><span class="small">totalt</span></div></div></div>
+      <div class="legend" id="costLegend"></div>
+    </div>
+    <div class="cards" style="margin-top:12px">
+      <div class="card"><div class="metric" id="totalStayCost">0 kr</div><div class="label">🏨 Overnatting</div></div>
+      <div class="card"><div class="metric" id="totalFlightCost">0 kr</div><div class="label">✈️ Fly</div></div>
+      <div class="card"><div class="metric" id="totalTransportCost">0 kr</div><div class="label">🚗 Transport</div></div>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="flightModal onclick="if(event.target===this)closeModal('flightModal')">
+ <div class="sheet">
+  <div class="section-title" style="margin-top:0"><h2>Ny flyreise</h2><button class="secondary" onclick="closeModal('flightModal')">✕</button></div>
+  <input type="hidden" id="flightEditId">
+  <div class="grid2"><div><label>Dato</label><input id="flightDate" type="date"></div><div><label>Flynummer</label><input id="flightNo" placeholder="SK 455"></div></div>
+  <div class="grid2"><div><label>Flyselskap</label><input id="airline" placeholder="SAS"></div><div><label>Pris (NOK)</label><input id="flightPrice" type="number" min="0"></div></div>
+  <div class="grid2"><div><label>Fra</label><input id="flightFrom" placeholder="OSL"></div><div><label>Til</label><input id="flightTo" placeholder="BKK"></div></div>
+  <div class="grid2"><div><label>Avgang</label><input id="departTime" type="time"></div><div><label>Ankomst</label><input id="arriveTime" type="time"></div></div>
+  <label>Notat</label><input id="flightNote" placeholder="Terminal, bagasje, bookingreferanse osv.">
+  <div class="form-actions"><button class="secondary" onclick="closeModal('flightModal')">Avbryt</button><button class="primary" onclick="saveFlight()">Lagre</button></div>
+ </div>
+</div>
+
+<div class="modal" id="transportModal" onclick="if(event.target===this)closeModal('transportModal')">
+ <div class="sheet">
+  <div class="section-title" style="margin-top:0"><h2>Ny transport</h2><button class="secondary" onclick="closeModal('transportModal')">✕</button></div>
+  <input type="hidden" id="transportEditId">
+  <div class="grid2"><div><label>Dato</label><input id="transportDate" type="date"></div><div><label>Type</label><select id="transportType"><option>Flyplasstransport</option><option>Taxi</option><option>Ferge/båt</option><option>Buss</option><option>Leiebil</option><option>Privat transport</option><option>Annet</option></select></div></div>
+  <div class="grid2"><div><label>Fra</label><input id="transportFrom" placeholder="BKK"></div><div><label>Til</label><input id="transportTo" placeholder="Hotell"></div></div>
+  <div class="grid2"><div><label>Pris (NOK)</label><input id="transportPrice" type="number" min="0"></div><div><label>Leverandør</label><input id="transportProvider" placeholder="F.eks. hotel shuttle"></div></div>
+  <label>Notat</label><input id="transportNote" placeholder="F.eks. 2 voksne + 2 barn">
+  <div class="form-actions"><button class="secondary" onclick="closeModal('transportModal')">Avbryt</button><button class="primary" onclick="saveTransport()">Lagre</button></div>
+ </div>
+</div>
+
+<div class="modal" id="bookingModal" onclick="if(event.target===this)closeModal('bookingModal')">
+ <div class="sheet">
+  <div class="section-title" style="margin-top:0"><h2 id="formTitle">Ny booking</h2><button class="secondary" onclick="closeModal('bookingModal')">✕</button></div>
+  <input type="hidden" id="editId">
+  <label>Hotell / sted</label><input id="name" placeholder="F.eks. Lanta Paradise Beach Resort">
+  <div class="grid2">
+   <div><label>Innsjekk</label><input id="start" type="date"></div>
+   <div><label>Utsjekk</label><input id="end" type="date"></div>
+  </div>
+  <div class="grid2">
+   <div><label>Pris (NOK)</label><input id="price" type="number" min="0" step="1"></div>
+   <div><label>Land / område</label><input id="place" placeholder="Thailand"></div>
+  </div>
+  <label>Notat</label><input id="note" placeholder="Valgfritt">
+  <div class="form-actions"><button class="secondary" onclick="closeModal('bookingModal')">Avbryt</button><button class="primary" onclick="saveBooking()">Lagre</button></div>
+ </div>
+</div>
+
+<div class="modal" id="uploadModal" onclick="if(event.target===this)closeModal('uploadModal')">
+ <div class="sheet">
+  <div class="section-title" style="margin-top:0"><h2>📷 Legg til fra bookingbilder</h2><button class="secondary" onclick="closeModal('uploadModal')">✕</button></div>
+  <div class="drop" id="drop">
+    <b>Velg ett eller flere skjermbilder</b><br>
+    <span class="small">Appen leser teksten i bildet og forsøker å finne hotell, datoer og pris.</span><br><br>
+    <input id="imageFiles" type="file" accept="image/*" multiple>
+  </div>
+  <div id="ocrStatus" class="note" style="margin-top:10px"></div>
+  <div class="progress"><div class="bar" id="ocrBar"></div></div>
+  <div id="ocrResult"></div>
+  <div class="form-actions"><button class="secondary" onclick="closeModal('uploadModal')">Lukk</button><button class="primary" id="addParsed" onclick="addParsed()" disabled>Legg til funn</button></div>
+  <p class="note">Tips: Kontroller dato og pris etter OCR. Data lagres lokalt i nettleseren din.</p>
+ </div>
+</div>
+
+<script>
+const STORAGE='reisebookinger_v1';
+const seed=[];
+
+
+let bookings=JSON.parse(localStorage.getItem(STORAGE)||'null') || [];
+let flights=JSON.parse(localStorage.getItem('reise_fly_v2')||'null') || [];
+let transports=JSON.parse(localStorage.getItem('reise_transport_v2')||'null') || [];
+let parsed=[];
+
+function save(){localStorage.setItem(STORAGE,JSON.stringify(bookings));render()}
+function nok(n){return new Intl.NumberFormat('nb-NO',{style:'currency',currency:'NOK',maximumFractionDigits:0}).format(n)}
+function d(s){return new Date(s+'T00:00:00')}
+function fmt(s){return d(s).toLocaleDateString('nb-NO',{day:'numeric',month:'short',year:'numeric'})}
+function nights(b){return Math.max(0,Math.round((d(b.end)-d(b.start))/86400000))}
+function sort(){bookings.sort((a,b)=>a.start.localeCompare(b.start))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+
+
+function showTab(tab){
+ const ids=['stays','flights','transport','total'];
+ ids.forEach(x=>{
+   const content=x==='stays'?'staysTab':x==='flights'?'flightsTab':x==='transport'?'transportTabContent':'totalTabContent';
+   document.getElementById(content).classList.toggle('hidden',x!==tab);
+ });
+ document.getElementById('stayTab').classList.toggle('active',tab==='stays');
+ document.getElementById('flightTab').classList.toggle('active',tab==='flights');
+ document.getElementById('transportTab').classList.toggle('active',tab==='transport');
+ document.getElementById('totalTab').classList.toggle('active',tab==='total');
+ if(tab==='total') renderTotals();
+}
+
+function saveFlights(){localStorage.setItem('reise_fly_v2',JSON.stringify(flights));renderFlights()}
+function openFlightAdd(){
+ ['flightEditId','flightDate','flightNo','airline','flightPrice','flightFrom','flightTo','departTime','arriveTime','flightNote'].forEach(x=>document.getElementById(x).value='');
+ document.getElementById('flightModal').classList.add('show');
+}
+function editFlight(id){
+ const f=flights.find(x=>x.id===id); if(!f)return;
+ const m={flightEditId:'id',flightDate:'date',flightNo:'flightNo',airline:'airline',flightPrice:'price',flightFrom:'from',flightTo:'to',departTime:'depart',arriveTime:'arrive',flightNote:'note'};
+ Object.entries(m).forEach(([el,k])=>document.getElementById(el).value=f[k]??'');
+ document.getElementById('flightModal').classList.add('show');
+}
+function saveFlight(){
+ const f={id:document.getElementById('flightEditId').value||crypto.randomUUID(),
+ date:document.getElementById('flightDate').value,flightNo:document.getElementById('flightNo').value.trim(),
+ airline:document.getElementById('airline').value.trim(),price:Number(document.getElementById('flightPrice').value||0),
+ from:document.getElementById('flightFrom').value.trim().toUpperCase(),to:document.getElementById('flightTo').value.trim().toUpperCase(),
+ depart:document.getElementById('departTime').value,arrive:document.getElementById('arriveTime').value,note:document.getElementById('flightNote').value.trim()};
+ if(!f.date||!f.from||!f.to){alert('Fyll inn dato, fra og til.');return}
+ const i=flights.findIndex(x=>x.id===f.id); if(i>=0)flights[i]=f; else flights.push(f);
+ flights.sort((a,b)=>(a.date+a.depart).localeCompare(b.date+b.depart)); saveFlights(); closeModal('flightModal');
+}
+function removeFlight(id){if(confirm('Slette denne flyreisen?')){flights=flights.filter(x=>x.id!==id);saveFlights()}}
+
+function saveTransports(){localStorage.setItem('reise_transport_v2',JSON.stringify(transports));renderTransport();renderTotals()}
+function openTransportAdd(){
+ ['transportEditId','transportDate','transportFrom','transportTo','transportPrice','transportProvider','transportNote'].forEach(x=>document.getElementById(x).value='');
+ document.getElementById('transportType').value='Flyplasstransport';
+ document.getElementById('transportModal').classList.add('show');
+}
+function editTransport(id){
+ const t=transports.find(x=>x.id===id); if(!t)return;
+ const m={transportEditId:'id',transportDate:'date',transportType:'type',transportFrom:'from',transportTo:'to',transportPrice:'price',transportProvider:'provider',transportNote:'note'};
+ Object.entries(m).forEach(([el,k])=>document.getElementById(el).value=t[k]??'');
+ document.getElementById('transportModal').classList.add('show');
+}
+function saveTransport(){
+ const t={id:document.getElementById('transportEditId').value||crypto.randomUUID(),date:document.getElementById('transportDate').value,
+ type:document.getElementById('transportType').value,from:document.getElementById('transportFrom').value.trim(),
+ to:document.getElementById('transportTo').value.trim(),price:Number(document.getElementById('transportPrice').value||0),
+ provider:document.getElementById('transportProvider').value.trim(),note:document.getElementById('transportNote').value.trim()};
+ if(!t.date||!t.type){alert('Fyll inn dato og type.');return}
+ const i=transports.findIndex(x=>x.id===t.id);if(i>=0)transports[i]=t;else transports.push(t);
+ transports.sort((a,b)=>a.date.localeCompare(b.date));saveTransports();closeModal('transportModal');
+}
+function removeTransport(id){if(confirm('Slette denne transportposten?')){transports=transports.filter(x=>x.id!==id);saveTransports()}}
+function renderTransport(){
+ const total=transports.reduce((s,t)=>s+Number(t.price||0),0);
+ document.getElementById('transportCount').textContent=transports.length;
+ document.getElementById('transportCost').textContent=nok(total);
+ document.getElementById('transport').innerHTML=transports.map(t=>`
+ <div class="transport-card">
+  <div class="booking-top"><div><div class="name">${esc(t.type)}</div><div class="dates">${fmt(t.date)}${t.from||t.to?' · '+esc(t.from)+' → '+esc(t.to):''}</div></div><div class="price">${t.price?nok(t.price):'–'}</div></div>
+  ${t.provider?`<div class="small">🚐 ${esc(t.provider)}</div>`:''}${t.note?`<div class="small" style="margin-top:5px">${esc(t.note)}</div>`:''}
+  <div class="actions"><button class="secondary" onclick="editTransport('${t.id}')">Rediger</button><button class="danger" onclick="removeTransport('${t.id}')">Slett</button></div>
+ </div>`).join('') || '<div class="card empty">Ingen transport lagt inn ennå.</div>';
+}
+function renderTotals(){
+ const stay=bookings.reduce((s,b)=>s+Number(b.price||0),0), flight=flights.reduce((s,f)=>s+Number(f.price||0),0), transport=transports.reduce((s,t)=>s+Number(t.price||0),0), total=stay+flight+transport;
+ document.getElementById('grandTotal').textContent=nok(total);
+ document.getElementById('totalStayCost').textContent=nok(stay);
+ document.getElementById('totalFlightCost').textContent=nok(flight);
+ document.getElementById('totalTransportCost').textContent=nok(transport);
+ const parts=[['Overnatting',stay,'#2f80ed'],['Fly',flight,'#27ae60'],['Transport',transport,'#f2994a']];
+ const vals=parts.map(x=>x[1]);
+ const nonzero=parts.filter(x=>x[1]>0);
+ let angle=0, stops=[];
+ nonzero.forEach(x=>{const a=x[1]/total*360;stops.push(`${x[2]} ${angle}deg ${angle+a}deg`);angle+=a});
+ document.getElementById('pieChart').style.background=total?'conic-gradient('+stops.join(',')+')':'#e8edf4';
+ document.getElementById('costLegend').innerHTML=parts.map(x=>`<div class="legend-row"><span><i class="dot" style="background:${x[2]}"></i>${x[0]}</span><strong>${nok(x[1])} · ${total?Math.round(x[1]/total*100):0}%</strong></div>`).join('');
+}
+function renderFlights(){
+ const total=flights.reduce((s,f)=>s+Number(f.price||0),0);
+ document.getElementById('flightCount').textContent=flights.length;
+ document.getElementById('flightCost').textContent=nok(total);
+ document.getElementById('flightCountLabel').textContent=flights.length+' flyreiser';
+ document.getElementById('flights').innerHTML=flights.map(f=>`
+ <div class="flight">
+  <div class="booking-top">
+   <div><div class="flight-route">${esc(f.from)} <span class="flight-arrow">✈</span> ${esc(f.to)}</div>
+   <div class="small">${fmt(f.date)}${f.depart?' · '+esc(f.depart):''}${f.arrive?' → '+esc(f.arrive):''}</div></div>
+   <div class="flight-price">${f.price?nok(f.price):'–'}</div>
+  </div>
+  <div class="meta" style="margin-top:8px">
+   ${f.airline?`<span class="pill">🛫 ${esc(f.airline)}</span>`:''}
+   ${f.flightNo?`<span class="pill">✈️ ${esc(f.flightNo)}</span>`:''}
+  </div>
+  ${f.note?`<div class="small" style="margin-top:7px">${esc(f.note)}</div>`:''}
+  <div class="actions"><button class="secondary" onclick="editFlight('${f.id}')">Rediger</button><button class="danger" onclick="removeFlight('${f.id}')">Slett</button></div>
+ </div>`).join('') || '<div class="card empty">Ingen flyreiser lagt inn ennå.</div>';
+}
+
+function render(){
+ sort();
+ const total=bookings.reduce((s,b)=>s+Number(b.price||0),0);
+ const n=bookings.reduce((s,b)=>s+nights(b),0);
+ let gap=0;
+ for(let i=1;i<bookings.length;i++) gap+=Math.max(0,Math.round((d(bookings[i].start)-d(bookings[i-1].end))/86400000));
+ document.getElementById('totalCost').textContent=nok(total);
+ document.getElementById('totalNights').textContent=n+' netter';
+ document.getElementById('gapNights').textContent=gap+' netter';
+ document.getElementById('avgNight').textContent=n?nok(total/n):'–';
+ document.getElementById('countLabel').textContent=bookings.length+' bookinger';
+
+ let gaps=[];
+ for(let i=1;i<bookings.length;i++){
+   const days=Math.round((d(bookings[i].start)-d(bookings[i-1].end))/86400000);
+   if(days>0) gaps.push({start:bookings[i-1].end,end:bookings[i].start,n:days});
+ }
+ document.getElementById('gaps').innerHTML=gaps.length?gaps.map(g=>`
+   <div class="gap"><strong>⚠ ${g.n} ledige netter</strong><br>
+   <span>${fmt(g.start)} → ${fmt(g.end)} · nettene ${fmt(g.start)}–${new Date(d(g.end)-86400000).toLocaleDateString('nb-NO',{day:'numeric',month:'short',year:'numeric'})}</span></div>`).join(''):'<div class="empty">Ingen hull mellom bookingene 🎉</div>';
+
+ const months={};
+ bookings.forEach(b=>{
+   const key=b.start.slice(0,7);
+   (months[key]??=[]).push(b);
+ });
+ let out='';
+ Object.keys(months).sort().forEach(key=>{
+   const arr=months[key];
+   const m=d(key+'-01').toLocaleDateString('nb-NO',{month:'long',year:'numeric'});
+   const cost=arr.reduce((s,b)=>s+Number(b.price||0),0);
+   out+=`<div class="month"><div class="monthhead"><span>${m[0].toUpperCase()+m.slice(1)}</span><span>${nok(cost)}</span></div><div class="monthbody">`;
+   arr.forEach(b=>{
+    const n=nights(b), week=b.price/n*7, mon=b.price/n*30.44;
+    out+=`<div class="booking">
+      <div class="booking-top"><div class="name">${esc(b.name)}</div><div class="price">${nok(b.price)}</div></div>
+      <div class="dates">${fmt(b.start)} → ${fmt(b.end)}</div>
+      <div class="meta">
+       <span class="pill">🛏 ${n} netter</span>
+       <span class="pill">Natt: ${nok(b.price/n)}</span>
+       <span class="pill">Uke: ${nok(week)}</span>
+       <span class="pill">30 dager: ${nok(mon)}</span>
+       ${b.place?`<span class="pill">📍 ${esc(b.place)}</span>`:''}
+      </div>
+      ${b.note?`<div class="small" style="margin-top:7px">${esc(b.note)}</div>`:''}
+      <div class="actions"><button class="secondary" onclick="editBooking('${b.id}')">Rediger</button><button class="danger" onclick="removeBooking('${b.id}')">Slett</button></div>
+    </div>`;
+   });
+   out+='</div></div>';
+ });
+ document.getElementById('bookings').innerHTML=out||'<div class="card empty">Ingen bookinger ennå.</div>';
+ renderFlights();
+ renderTransport();
+ renderTotals();
+}
+function openAdd(){
+ document.getElementById('formTitle').textContent='Ny booking'; document.getElementById('editId').value='';
+ ['name','price','place','note','start','end'].forEach(x=>document.getElementById(x).value='');
+ document.getElementById('bookingModal').classList.add('show');
+}
+function editBooking(id){
+ const b=bookings.find(x=>x.id===id); if(!b)return;
+ document.getElementById('formTitle').textContent='Rediger booking'; document.getElementById('editId').value=id;
+ ['name','start','end','price','place','note'].forEach(x=>document.getElementById(x).value=b[x]??'');
+ document.getElementById('bookingModal').classList.add('show');
+}
+function saveBooking(){
+ const b={id:document.getElementById('editId').value||crypto.randomUUID(),name:document.getElementById('name').value.trim(),start:document.getElementById('start').value,end:document.getElementById('end').value,price:Number(document.getElementById('price').value||0),place:document.getElementById('place').value.trim(),note:document.getElementById('note').value.trim()};
+ if(!b.name||!b.start||!b.end||b.end<=b.start){alert('Fyll inn hotell, datoer og en gyldig periode.');return}
+ const idx=bookings.findIndex(x=>x.id===b.id); if(idx>=0) bookings[idx]=b; else bookings.push(b);
+ save(); closeModal('bookingModal');
+}
+function removeBooking(id){if(confirm('Slette denne bookingen?')){bookings=bookings.filter(x=>x.id!==id);save()}}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function openUpload(){document.getElementById('uploadModal').classList.add('show');document.getElementById('ocrResult').innerHTML='';document.getElementById('ocrStatus').textContent='';document.getElementById('ocrBar').style.width='0';document.getElementById('addParsed').disabled=true;parsed=[]}
+
+async function ensureTesseract(){
+ if(window.Tesseract)return window.Tesseract;
+ await new Promise((resolve,reject)=>{
+   const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s);
+ });
+ return window.Tesseract;
+}
+document.getElementById('imageFiles').addEventListener('change',e=>processImages([...e.target.files]));
+const drop=document.getElementById('drop');
+drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag')});
+drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));
+drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');processImages([...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')))})
+
+async function processImages(files){
+ if(!files.length)return;
+ const status=document.getElementById('ocrStatus'), bar=document.getElementById('ocrBar'), result=document.getElementById('ocrResult');
+ try{
+   const T=await ensureTesseract();
+   parsed=[];
+   for(let i=0;i<files.length;i++){
+     status.textContent=`Leser bilde ${i+1} av ${files.length}…`;
+     const worker=await T.createWorker('eng');
+     const r=await worker.recognize(files[i]);
+     await worker.terminate();
+     const text=r.data.text;
+     const found=parseOCR(text);
+     parsed.push(...found);
+     bar.style.width=((i+1)/files.length*100)+'%';
+   }
+   renderParsed(result); status.textContent=`Ferdig. Fant ${parsed.length} mulig(e) booking(er). Kontroller før du legger dem til.`;
+   document.getElementById('addParsed').disabled=!parsed.length;
+ }catch(e){status.textContent='OCR kunne ikke startes. Du kan fortsatt legge inn booking manuelt.';console.error(e)}
+}
+
+const monthMap={jan:1,january:1,feb:2,february:2,mar:3,march:3,apr:4,april:4,may:5,mai:5,jun:6,june:6,jul:7,july:7,aug:8,august:8,sep:9,september:9,okt:10,oct:10,october:10,nov:11,november:11,des:12,dec:12,december:12};
+function parseDateToken(s,baseYear){
+ let m=s.match(/(\d{1,2})[.\-\/\s]+([A-Za-z]{3,9})[.\-\/\s]+(\d{2,4})/i);
+ if(!m)m=s.match(/(\d{1,2})[.\-\/](\d{1,2})[.\-\/](\d{2,4})/);
+ if(m){
+  let day=+m[1], mon=isNaN(+m[2])?monthMap[m[2].toLowerCase()]:+m[2], year=+m[3]; if(year<100)year+=2000;
+  if(mon)return `${year}-${String(mon).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+ }
+ return null;
+}
+function parseOCR(text){
+ const lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean);
+ const dates=[];
+ const dateRegex=/\b\d{1,2}[.\-\/\s]+(?:[A-Za-z]{3,9}|\d{1,2})[.\-\/\s]+\d{2,4}\b/gi;
+ for(const line of lines){for(const m of line.matchAll(dateRegex)){const v=parseDateToken(m[0]);if(v)dates.push(v)}}
+ // Find consecutive date pairs and a nearby price/name.
+ const out=[];
+ for(let i=0;i<dates.length-1;i++){
+   const a=d(dates[i]),b=d(dates[i+1]); if(b<=a)continue;
+   const around=lines.slice(Math.max(0,i-2),Math.min(lines.length,i+4)).join(' ');
+   let p=around.match(/(?:NOK|kr)?\s*([\d][\d\s.,]{2,})\s*(?:NOK|kr)?/i);
+   let price=p?Number(p[1].replace(/\s/g,'').replace(/\.(?=\d{3}\b)/g,'').replace(',','.')):0;
+   // safer price candidates from whole nearby block
+   const nums=[...around.matchAll(/\b\d{1,2}(?:[ .]\d{3})+(?:,\d+)?\b|\b\d{3,5}(?:[.,]\d{2})?\b/g)].map(x=>Number(x[0].replace(/\s/g,'').replace(/\./g,'').replace(',','.'))).filter(x=>x>=500);
+   if(!price&&nums.length)price=nums[0];
+   const skip=['bestilling','bekreftet','booking','kr','nok','gratis','delsum','total','fly'];
+   let name=lines.find(x=>x.length>4&&!dateRegex.test(x)&&!/^\d/.test(x)&&!skip.includes(x.toLowerCase())&&!/parkeringsinformasjon/i.test(x)&&!/sjekk status/i.test(x));
+   if(!name)name='Booking fra bilde';
+   out.push({id:crypto.randomUUID(),name:name.replace(/\s+/g,' '),start:dates[i],end:dates[i+1],price:price||0,place:'',note:'OCR – kontroller opplysningene'});
+   break;
+ }
+ return out;
+}
+function renderParsed(el){
+ if(!parsed.length){el.innerHTML='<div class="empty">Ingen tydelige bookingpar funnet.</div>';return}
+ el.innerHTML=`<table><thead><tr><th>Sted</th><th>Dato</th><th>Pris</th></tr></thead><tbody>`+
+ parsed.map((b,i)=>`<tr><td><input value="${esc(b.name)}" onchange="parsed[${i}].name=this.value"></td><td><input type="date" value="${b.start}" onchange="parsed[${i}].start=this.value"><input type="date" value="${b.end}" onchange="parsed[${i}].end=this.value"></td><td><input type="number" value="${b.price}" onchange="parsed[${i}].price=Number(this.value)"></td></tr>`).join('')+'</tbody></table>';
+}
+function addParsed(){
+ parsed.filter(b=>b.name&&b.start&&b.end&&b.end>b.start).forEach(b=>bookings.push(b));
+ save(); closeModal('uploadModal'); alert('Bookingene er lagt til. Kontroller oversikten og eventuelle hull.');
+}
+function exportData(){
+ const payload={version:2,bookings,flights,transports,exportedAt:new Date().toISOString()};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='reisebookinger-backup.json';a.click();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function importData(file){
+ if(!file)return;
+ const r=new FileReader();
+ r.onload=()=>{
+  try{
+   const x=JSON.parse(r.result);
+   if(Array.isArray(x)){
+     bookings=x; flights=[]; transports=[];
+   } else if(x && Array.isArray(x.bookings)){
+     bookings=x.bookings;
+     flights=Array.isArray(x.flights)?x.flights:[];
+     transports=Array.isArray(x.transports)?x.transports:[];
+   } else throw 0;
+   localStorage.setItem(STORAGE,JSON.stringify(bookings));
+   localStorage.setItem('reise_fly_v2',JSON.stringify(flights));
+   localStorage.setItem('reise_transport_v2',JSON.stringify(transports));
+   render();
+   alert('Data importert: '+bookings.length+' overnattinger, '+flights.length+' flyreiser og '+transports.length+' transportposter.');
+  }catch(e){alert('Kunne ikke importere filen. Velg en gyldig Reisebookinger-backup (.json).')}
+ };
+ r.readAsText(file);
+}
+render();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
