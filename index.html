@@ -343,7 +343,7 @@ function render(){
  }
  document.getElementById('gaps').innerHTML=gaps.length?gaps.map(g=>`
    <div class="gap"><strong>⚠ Ledig periode</strong><br>
-   <span>${fmt(g.start)} → ${fmt(g.end)} · nettene ${fmt(g.start)}–${new Date(d(g.end)-86400000).toLocaleDateString('nb-NO',{day:'numeric',month:'short',year:'numeric'})}</span></div>`).join(''):'<div class="empty">Ingen hull mellom bookingene 🎉</div>';
+   <span>${fmt(g.start)} → ${fmt(g.end)}</span></div>`).join(''):'<div class="empty">Ingen hull mellom bookingene 🎉</div>';
 
  const months={};
  bookings.forEach(b=>{
