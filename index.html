@@ -41,7 +41,7 @@ h2{font-size:17px;margin:0}.small{font-size:12px;color:var(--muted)}
 .booking-top{display:flex;justify-content:space-between;gap:10px}.name{font-weight:800;font-size:15px}.price{font-weight:800;white-space:nowrap}
 .dates{color:var(--blue);font-weight:700;margin:5px 0;font-size:14px}
 .meta{display:flex;gap:6px;flex-wrap:wrap}.pill{background:#f0f4f8;border-radius:999px;padding:5px 8px;font-size:12px;color:#435168}
-.actions{display:flex;gap:6px;margin-top:10px}.actions button{padding:7px 9px;font-size:12px}
+.actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.actions button{padding:7px 9px;font-size:12px}
 .gap{border:1px dashed #e1a2a2;background:var(--red2);border-radius:14px;padding:11px 13px;margin:8px 0;color:#8e2828}
 .gap strong{font-size:14px}.gap span{font-size:12px}
 .month{margin-bottom:12px}.monthhead{display:flex;justify-content:space-between;padding:10px 12px;background:#edf4fc;border-radius:12px;font-weight:800}
@@ -342,7 +342,7 @@ function render(){
    if(days>0) gaps.push({start:bookings[i-1].end,end:bookings[i].start,n:days});
  }
  document.getElementById('gaps').innerHTML=gaps.length?gaps.map(g=>`
-   <div class="gap"><strong>⚠ ${g.n} ledige netter</strong><br>
+   <div class="gap"><strong>⚠ Ledig periode</strong><br>
    <span>${fmt(g.start)} → ${fmt(g.end)} · nettene ${fmt(g.start)}–${new Date(d(g.end)-86400000).toLocaleDateString('nb-NO',{day:'numeric',month:'short',year:'numeric'})}</span></div>`).join(''):'<div class="empty">Ingen hull mellom bookingene 🎉</div>';
 
  const months={};
@@ -369,7 +369,7 @@ function render(){
        ${b.place?`<span class="pill">📍 ${esc(b.place)}</span>`:''}
       </div>
       ${b.note?`<div class="small" style="margin-top:7px">${esc(b.note)}</div>`:''}
-      <div class="actions"><button class="secondary" onclick="editBooking('${b.id}')">Rediger</button><button class="danger" onclick="removeBooking('${b.id}')">Slett</button></div>
+      <div class="actions"><button class="primary" onclick="shareBooking('${b.id}')">↗ Del</button><button class="secondary" onclick="editBooking('${b.id}')">Rediger</button><button class="danger" onclick="removeBooking('${b.id}')">Slett</button></div>
     </div>`;
    });
    out+='</div></div>';
@@ -397,6 +397,30 @@ function saveBooking(){
  save(); closeModal('bookingModal');
 }
 function removeBooking(id){if(confirm('Slette denne bookingen?')){bookings=bookings.filter(x=>x.id!==id);save()}}
+function shareBooking(id){
+ const b=bookings.find(x=>x.id===id); if(!b)return;
+ const n=nights(b);
+ const lines=[
+   '🏨 Hvor skal vi bo?',
+   b.name || 'Overnatting',
+   '📅 '+fmt(b.start)+' → '+fmt(b.end),
+   '🛏 '+n+' '+(n===1?'natt':'netter')
+ ];
+ if(b.place) lines.push('📍 '+b.place);
+ if(b.note) lines.push('📝 '+b.note);
+ lines.push('', 'Delt fra Reisebookinger ✈️');
+ const text=lines.join('\n');
+ if(navigator.share){
+   navigator.share({title:'Overnatting – '+(b.name||'Reisebookinger'),text}).catch(()=>{});
+ }else if(navigator.clipboard){
+   navigator.clipboard.writeText(text).then(()=>alert('Bookingsteksten er kopiert. Lim den inn i melding, WhatsApp eller Messenger.')).catch(()=>fallbackCopy(text));
+ }else fallbackCopy(text);
+}
+function fallbackCopy(text){
+ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+ try{document.execCommand('copy');alert('Bookingsteksten er kopiert. Lim den inn i meldingen din.')}catch(e){alert(text)}
+ ta.remove();
+}
 function closeModal(id){document.getElementById(id).classList.remove('show')}
 function openUpload(){document.getElementById('uploadModal').classList.add('show');document.getElementById('ocrResult').innerHTML='';document.getElementById('ocrStatus').textContent='';document.getElementById('ocrBar').style.width='0';document.getElementById('addParsed').disabled=true;parsed=[]}
 

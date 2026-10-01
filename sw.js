@@ -1,4 +1,4 @@
-const CACHE='reisebookinger-v3';
+const CACHE='reisebookinger-v5-share';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
