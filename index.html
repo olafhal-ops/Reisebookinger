@@ -2,689 +2,120 @@
 <html lang="no">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b63ce">
-<title>ReiseKlar – reiseoversikt</title>
-<style>
-:root{
-  --bg:#f3efe8; --surface:#fffdf8; --surface2:#f7f3eb; --ink:#17241f; --muted:#78827b;
-  --line:#e4ded2; --navy:#16352f; --blue:#587a70; --blue-soft:#eef4f0;
-  --gold:#c4934f; --danger:#b55a55; --danger-soft:#fff2ef; --success:#4e7d65;
-  --sand:#d8c5a4; --sage:#789486; --clay:#b9795d;
-  --shadow:0 18px 50px rgba(42,49,43,.09); --shadow-sm:0 8px 24px rgba(42,49,43,.065);
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{background:var(--bg);scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(circle at 50% -10%,#fffdf8 0,#f3efe8 48%,#ece7dd 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);font-size:15px;line-height:1.4}
-button,input,select{font:inherit}
-button{cursor:pointer}
-header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(22,53,47,.97),rgba(18,45,40,.96));color:#fff;padding:18px 18px 17px;box-shadow:0 10px 30px rgba(18,45,40,.18);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-.header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;max-width:920px;margin:auto}
-.brand{display:flex;align-items:center;gap:9px}.brand-icon{font-size:23px;filter:saturate(.9)}.brand-title{font-size:20px;font-weight:850;letter-spacing:-.4px}
-.trip-name{display:flex;align-items:center;gap:8px;margin-top:9px}.trip-name strong{font-size:21px;letter-spacing:-.5px}.trip-edit{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:800}
-.sub{color:rgba(255,255,255,.62);font-size:12px;margin-top:5px;letter-spacing:.1px}
-main{max-width:920px;margin:auto;padding:16px 14px 90px}
-.tabs{position:sticky;top:93px;z-index:15;display:flex;gap:3px;background:rgba(255,255,255,.88);border:1px solid rgba(222,227,234,.9);border-radius:18px;padding:5px;margin-bottom:18px;box-shadow:0 8px 25px rgba(18,32,52,.08);overflow-x:auto;scrollbar-width:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto;border:0;background:transparent;color:#778193;padding:11px 13px;border-radius:13px;font-weight:800;font-size:13px;letter-spacing:-.1px;transition:.18s}.tab.active{background:var(--navy);color:#fff;box-shadow:0 7px 18px rgba(22,53,47,.18)}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow-sm)}
-.metric{font-size:28px;line-height:1.05;font-weight:880;letter-spacing:-1px}.label{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.25}.stat-accent{background:linear-gradient(145deg,#fffdf8,#eef4ef);border-color:#d8e3dc}
-.toolbar{display:flex;gap:8px;overflow-x:auto;padding:1px 0 15px;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}
-button,.filebtn{border-radius:12px;padding:11px 14px;font-weight:800;font-size:13px;white-space:nowrap;transition:transform .12s,box-shadow .12s,background .12s}.primary{background:var(--navy);color:#fff;border:1px solid var(--navy);box-shadow:0 9px 18px rgba(22,53,47,.16)}.primary:active,.secondary:active{transform:translateY(1px)}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 2px 8px rgba(20,35,55,.03)}.danger{background:var(--danger-soft);color:var(--danger);border:1px solid #f7dfe2}
-.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:22px 3px 10px}.section-title h2,h2{font-size:18px;margin:0;letter-spacing:-.35px}.small{font-size:12px;color:var(--muted)}
-.booking,.flight,.transport-card,.expense-card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:20px;padding:17px;margin-bottom:10px;box-shadow:var(--shadow-sm)}
-.booking-top{display:flex;justify-content:space-between;gap:14px}.name{font-weight:860;font-size:17px;letter-spacing:-.35px}.price,.flight-price{font-weight:880;font-size:18px;white-space:nowrap;letter-spacing:-.35px}.dates{color:#55786e;font-weight:800;margin:6px 0 10px;font-size:14px}.actual-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:850}.actual-price{font-size:22px;font-weight:900;margin:2px 0 10px;letter-spacing:-.6px}
-.meta{display:flex;gap:6px;flex-wrap:wrap}.pill{background:#f1eee7;border:1px solid #e9edf2;border-radius:999px;padding:6px 9px;font-size:12px;color:#4f5c6e}.actions{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}.actions button{padding:8px 10px;font-size:12px}
-.price-toggle{margin-top:10px;color:#667285;font-size:12px;font-weight:800;cursor:pointer}.price-details{display:none;margin-top:9px;padding:10px 12px;border-radius:13px;background:#f7f9fb;border:1px solid #edf0f4;font-size:12px;color:#4b586b}.price-details.show{display:block}.price-details div{display:flex;justify-content:space-between;padding:3px 0}
-.gap{border:1px solid #ead8d6;background:linear-gradient(145deg,#fffafa,#fff6f5);border-radius:20px;padding:16px;margin:8px 0;color:#7e4947}.gap strong{font-size:13px}.gap-date{font-size:19px;font-weight:880;margin:5px 0;letter-spacing:-.35px}.gap-n{font-size:12px;color:#966563}.gap-actions{margin-top:12px}
-.month{margin-bottom:14px}.monthhead{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#ebe6dc;border-radius:14px;font-weight:850;color:#26344a}.monthbody{padding-top:8px}
-.flight-route{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:900;letter-spacing:-.55px}.flight-arrow{color:var(--blue)}
-.chart-wrap{display:flex;justify-content:center;align-items:center;padding:18px 0 8px}.pie{width:min(280px,72vw);height:min(280px,72vw);border-radius:50%;position:relative;box-shadow:0 14px 35px rgba(20,35,55,.10)}.pie:after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}.pie-center{position:absolute;inset:25%;border-radius:50%;background:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:0 4px 16px rgba(20,35,55,.07)}.pie-center strong{font-size:23px;letter-spacing:-.7px}.legend{display:grid;gap:10px;margin-top:14px}.legend-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 0}.dot{width:11px;height:11px;border-radius:50%;display:inline-block;margin-right:8px}
-.empty{padding:26px;text-align:center;color:var(--muted);background:#fffdf8;border:1px dashed #dce2e9;border-radius:18px}
-.modal{position:fixed;inset:0;background:rgba(7,15,25,.52);display:none;align-items:flex-end;justify-content:center;z-index:100;padding:12px}.modal.show{display:flex}.sheet{width:min(720px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:24px 24px 16px 16px;padding:20px;box-shadow:0 -12px 45px rgba(0,0,0,.2)}
-label{display:block;font-size:12px;font-weight:850;color:#596577;margin:10px 0 5px}input,select{width:100%;padding:12px 13px;border:1px solid #dfe5ec;border-radius:12px;background:#fbfcfd;color:var(--ink);outline:none}input:focus,select:focus{border-color:#8fb6e9;box-shadow:0 0 0 3px #eaf3ff}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.drop{border:1.5px dashed #cfd8e3;border-radius:16px;padding:20px;text-align:center;background:#f8fafc}.progress{height:8px;background:#edf0f3;border-radius:99px;overflow:hidden;margin-top:10px}.bar{height:100%;width:0;background:var(--blue);transition:width .2s}
-.note{font-size:12px;color:var(--muted)}
-
-.trip-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.42;display:none}.trip-cover.show{display:block}.header-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,53,47,.98) 0%,rgba(22,53,47,.90) 48%,rgba(22,53,47,.58) 100%);pointer-events:none}.header-content{position:relative;z-index:2}.header-row{position:relative;overflow:hidden;border-radius:18px;padding:2px}
-.booking-image{width:100%;height:150px;border-radius:16px;object-fit:cover;display:block;margin-bottom:13px;background:#ebe6dc}.booking-image-wrap{position:relative}.booking-image-wrap .image-badge{position:absolute;left:10px;bottom:10px;background:rgba(22,53,47,.82);color:#fff;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800;backdrop-filter:blur(8px)}
-.image-preview{display:none;width:100%;max-height:180px;object-fit:cover;border-radius:14px;margin-top:8px;border:1px solid var(--line)}.image-preview.show{display:block}.image-picker{border:1px dashed #cfc6b6;background:#faf7f0;border-radius:14px;padding:14px;text-align:center}.image-picker input{margin-top:8px}
-@media (max-width:560px){
-  header{padding:16px 16px 15px}.brand-title{font-size:19px}.trip-name strong{font-size:20px}main{padding:13px 12px 90px}.tabs{top:87px;margin-left:-2px;margin-right:-2px}.tab{font-size:12px;padding:10px 11px}.cards{gap:9px}.card{padding:15px;border-radius:18px}.metric{font-size:25px}.booking,.flight,.transport-card,.expense-card{padding:15px;border-radius:18px}.name{font-size:16px}.grid2{grid-template-columns:1fr}.sheet{padding:18px;border-radius:22px 22px 12px 12px}.section-title{margin-top:18px}.pie{width:min(270px,78vw);height:min(270px,78vw)}}
-@media (max-width:380px){.tab{padding-left:9px;padding-right:9px}.metric{font-size:23px}.trip-edit{font-size:10px}}
-.hidden{display:none!important}
-.badge-ok{color:var(--success);font-weight:800}.badge-gap{color:var(--danger);font-weight:800}
-
-.expense-breakdown{margin-top:20px;padding-top:18px;border-top:1px solid #e7ebf1}
-.breakdown-title{font-size:14px;font-weight:800;color:#667085;margin-bottom:10px}
-.breakdown-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.breakdown-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 12px;background:#f7f9fc;border-radius:14px;font-size:14px}
-.breakdown-item span{display:flex;align-items:center;gap:7px;min-width:0}
-.breakdown-item strong{white-space:nowrap}
-@media(max-width:520px){.breakdown-grid{grid-template-columns:1fr}}
-</style>
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0b63ce">
-<meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#102d2a">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="ReiseKlar">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SmileyOh">
+<link rel="manifest" href="manifest.webmanifest">
+<title>SmileyOh — Travel. Spend. Smile.</title>
+<style>
+:root{--navy:#102d2a;--navy2:#173f3a;--teal:#16b7ad;--teal2:#54d6c9;--gold:#f7b94a;--orange:#ff9f1c;--purple:#8f63c7;--red:#c65353;--bg:#f7f5ef;--card:#fffefa;--text:#142b29;--muted:#71807d;--line:#e5e2d9;--shadow:0 14px 34px rgba(20,43,41,.09)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#edf2f8 0,#f7f8fb 45%,#eef2f7 100%);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.apphead{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,var(--navy),#173a62);color:#fff;padding:17px 18px 18px;box-shadow:0 8px 25px rgba(5,17,34,.18)}.brand{font-size:25px;font-weight:900;letter-spacing:-.5px;display:flex;align-items:center;gap:9px}.brandimg{width:42px;height:42px;border-radius:12px;object-fit:cover;border:1px solid #ffffff35;box-shadow:0 4px 12px #0004}.brandemoji{font-size:29px}.data-actions{display:flex;gap:7px;overflow:auto;margin-top:12px}.data-actions .btn{padding:8px 11px;font-size:12px}.triprow{display:flex;align-items:center;gap:9px;margin-top:12px}.tripname{font-size:25px;font-weight:900;letter-spacing:-.7px}.edittrip{background:#ffffff18;border:1px solid #ffffff30;color:#fff;border-radius:999px;padding:8px 12px;font-weight:800}.subtitle{margin-top:6px;color:#b9c5d5;font-size:13px}
+main{max-width:980px;margin:auto;padding:13px 12px 90px}.tabs{position:sticky;top:104px;z-index:15;display:flex;gap:4px;overflow:auto;background:#ffffffed;backdrop-filter:blur(12px);border:1px solid var(--line);padding:5px;border-radius:18px;box-shadow:var(--shadow);margin-bottom:15px}.tab{flex:1;min-width:108px;border:0;background:transparent;color:var(--muted);border-radius:13px;padding:12px 10px;font-weight:900}.tab.active{background:var(--navy);color:#fff;box-shadow:0 5px 14px #0b1b3330}
+.hero{border-radius:22px;padding:20px;color:#fff;background:linear-gradient(135deg,#0e2c4f,#1d5fa6);box-shadow:var(--shadow);margin-bottom:14px}.hero h2{margin:0;font-size:22px}.hero p{margin:5px 0 0;color:#d5e2f0}.hero-actions{display:flex;gap:8px;overflow:auto;margin-top:15px}.btn{border:0;border-radius:13px;padding:11px 14px;font-weight:900;white-space:nowrap}.primary{background:var(--blue);color:#fff}.darkbtn{background:#ffffff18;border:1px solid #ffffff30;color:#fff}.light{background:#fff;color:var(--text);border:1px solid var(--line)}.danger{background:#fff0f0;color:var(--red)}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)}.metric{font-size:28px;font-weight:950;letter-spacing:-1px}.label{font-size:12px;color:var(--muted);margin-top:4px}.section{display:flex;justify-content:space-between;align-items:end;margin:21px 3px 10px}.section h2{margin:0;font-size:19px}.small{font-size:12px;color:var(--muted)}
+.gap{background:#fff6f4;border:1px solid #f0c9c2;border-radius:18px;padding:15px;margin:8px 0}.gap strong{font-size:16px;color:#8e3934}.gap .range{font-size:18px;font-weight:900;margin-top:3px}.gap .sub{margin-top:4px;color:#94605b}.gap .btn{margin-top:11px}
+.month{margin:14px 0}.monthhead{display:flex;justify-content:space-between;padding:13px 15px;background:#eaf1f9;border-radius:15px;font-weight:900;text-transform:capitalize}.booking{background:#fff;border:1px solid var(--line);border-radius:19px;padding:15px;margin-top:9px;box-shadow:0 7px 20px rgba(15,32,55,.05)}.bookingtop{display:flex;justify-content:space-between;gap:12px}.name{font-size:17px;font-weight:900}.price{font-size:18px;font-weight:950;white-space:nowrap}.dates{color:#2167c2;font-weight:850;margin:5px 0 10px}.pills{display:flex;gap:6px;flex-wrap:wrap}.pill{background:#f1f4f8;color:#536174;border-radius:999px;padding:6px 9px;font-size:12px}.actions{display:flex;gap:7px;margin-top:12px}.actions .btn{padding:8px 10px;font-size:12px}.thumb{width:100%;height:120px;object-fit:cover;border-radius:14px;margin-bottom:11px;background:#edf1f5}
+.toolbar{display:flex;gap:8px;overflow:auto;margin:0 0 12px;padding:2px}.toolbar .btn{flex:none}.empty{text-align:center;color:var(--muted);padding:28px 10px}
+.flight,.transport,.expense{background:#fff;border:1px solid var(--line);border-radius:19px;padding:15px;margin-bottom:10px;box-shadow:0 7px 20px rgba(15,32,55,.05)}.route{font-size:20px;font-weight:950}.row{display:flex;justify-content:space-between;gap:10px}.tag{display:inline-block;background:#f1f5fa;border-radius:999px;padding:6px 9px;font-size:12px;color:#526074;margin:7px 4px 0 0}.expensecat{font-size:17px;font-weight:900}.catdot{width:11px;height:11px;border-radius:50%;display:inline-block;margin-right:7px}
+.chart{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}.donutwrap{display:flex;justify-content:center;padding:4px 0 17px}.donut{width:min(315px,76vw);height:min(315px,76vw);border-radius:50%;position:relative}.donut:after{content:"";position:absolute;inset:24%;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px #edf0f4}.donutcenter{position:absolute;inset:24%;z-index:1;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}.donutcenter strong{font-size:25px}.legend{display:grid;gap:8px}.legendrow{display:flex;align-items:center;justify-content:space-between;padding:8px 0}.legendname{display:flex;align-items:center;gap:7px}.legenddot{width:12px;height:12px;border-radius:50%}.stats{margin-top:12px}.stat{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+.modal{position:fixed;inset:0;background:#061426aa;z-index:50;display:none;align-items:flex-end}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-height:92vh;overflow:auto;border-radius:25px 25px 0 0;padding:20px}.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.sheethead h2{margin:0}.close{border:0;background:#eef2f6;border-radius:50%;width:38px;height:38px;font-weight:900}.choicegrid{display:grid;grid-template-columns:1fr;gap:10px}.choice{border:1px solid var(--line);background:#fff;border-radius:17px;padding:16px;text-align:left;box-shadow:0 6px 18px rgba(15,32,55,.05)}.choice b{display:block;font-size:16px}.choice span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}label{display:block;font-size:12px;font-weight:850;color:#596579;margin:10px 0 5px}input,select,textarea{width:100%;border:1px solid #cfd8e4;border-radius:12px;padding:11px 12px;background:#fff;color:var(--text)}textarea{min-height:120px}.formactions{display:flex;gap:8px;margin-top:15px}.formactions>*{flex:1}.note{font-size:12px;line-height:1.45;color:var(--muted)}.drop{border:2px dashed #b9c9dc;background:#f8fbff;border-radius:17px;padding:20px;text-align:center}.progress{height:7px;background:#edf1f5;border-radius:99px;overflow:hidden;margin-top:10px}.bar{height:100%;width:0;background:var(--blue)}.parsed{margin-top:12px}.parsedrow{border:1px solid var(--line);border-radius:15px;padding:12px;margin-top:8px}.linkbox{display:flex;gap:7px}.linkbox input{flex:1}
+@media(min-width:700px){.modal{align-items:center;padding:20px}.sheet{max-width:650px;border-radius:24px}.cards{grid-template-columns:repeat(4,1fr)}.choicegrid{grid-template-columns:repeat(3,1fr)}}
+.hidden{display:none!important}
+
+/* SmileyOh premium visual system */
+body{background:radial-gradient(circle at 90% -10%,rgba(84,214,201,.14),transparent 32%),linear-gradient(180deg,#f8f7f2 0,#f5f4ef 52%,#eef3ef 100%);}
+.apphead{background:linear-gradient(135deg,#0c2825 0%,#123b36 58%,#1b4d46 100%);padding:16px 18px 17px;box-shadow:0 10px 28px rgba(9,35,32,.22);overflow:hidden;position:sticky}
+.apphead:after{content:"";position:absolute;right:-90px;top:-100px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,#54d6c955 0,#54d6c900 68%);pointer-events:none}
+.brand{font-size:25px;letter-spacing:-.7px;position:relative;z-index:1}.brandword{font-weight:950}.brandaccent{color:#54d6c9}.brandimg{width:44px;height:44px;border-radius:14px;background:#fff;object-fit:contain;border:1px solid rgba(255,255,255,.28);box-shadow:0 7px 18px rgba(0,0,0,.18)}
+.triprow{position:relative;z-index:1;margin-top:13px}.tripname{font-size:24px}.edittrip{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(10px)}.subtitle{color:#c4d4d1;font-size:13px;position:relative;z-index:1}
+.data-actions{position:relative;z-index:1}.data-actions .btn{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
+main{max-width:980px;padding:14px 12px 96px}.tabs{position:sticky;top:98px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;overflow:visible;background:rgba(255,254,250,.9);border:1px solid rgba(229,226,217,.95);backdrop-filter:blur(16px);padding:5px;border-radius:20px;box-shadow:0 10px 28px rgba(20,43,41,.08);margin-bottom:16px}.tab{min-width:0;padding:11px 4px;border-radius:14px;font-size:12px;line-height:1.15;color:#73817f}.tab.active{background:linear-gradient(135deg,#123b36,#1b5149);box-shadow:0 7px 18px rgba(16,45,42,.22);color:#fff}.tabicon{display:block;font-size:17px;line-height:18px;margin-bottom:3px}.tablabel{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hero{background:linear-gradient(135deg,#123b36,#1d5c53);border-radius:24px;padding:21px;box-shadow:0 14px 32px rgba(16,45,42,.16);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;right:-70px;bottom:-110px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,#54d6c944,transparent 68%)}.hero h2,.hero p,.hero-actions{position:relative;z-index:1}.primary{background:linear-gradient(135deg,#18b8ad,#10958e);box-shadow:0 8px 18px rgba(16,152,142,.2)}
+.card,.booking,.flight,.transport,.expense,.chart{background:rgba(255,254,250,.94);border-color:#e5e2d9;box-shadow:0 9px 25px rgba(20,43,41,.055)}.card{border-radius:21px}.metric{font-size:29px;color:#132c2a}.label{font-size:12px;color:#74817f}.monthhead{background:linear-gradient(135deg,#e8f2ef,#eef5f2);color:#163b36}.booking{border-radius:20px}.dates{color:#176f68}.pill{background:#eff4f1;color:#536764}.gap{background:linear-gradient(135deg,#fff9f3,#fff4ec);border-color:#f1d6c2}.gap strong{color:#9a5633}.danger{background:#fff3f1}.chart{border-radius:24px}.donutcenter strong{color:#173532}
+.section h2{color:#16312e}
+@media(max-width:520px){.apphead{padding:14px 15px 15px}.brand{font-size:23px}.brandimg{width:40px;height:40px}.tripname{font-size:21px}.tabs{top:91px;border-radius:17px}.tab{padding:9px 2px;font-size:10.5px}.tabicon{font-size:16px}.main{padding-left:10px;padding-right:10px}.cards{gap:9px}.card{padding:14px}.metric{font-size:25px}}
+</style>
 </head>
 <body>
-<header>
-  <div class="header-row">
-    <img id="tripCover" class="trip-cover" alt="Reisebilde">
-    <div class="header-overlay"></div>
-    <div class="header-content">
-      <div class="brand"><span class="brand-icon">✈️</span><span class="brand-title">ReiseKlar</span></div>
-      <div class="trip-name"><strong id="tripNameDisplay">THAILAND 2026–27</strong><button class="trip-edit" onclick="editTripName()">✏️ Endre</button></div>
-      <div class="sub">Din komplette reiseoversikt · bookinger · kostnader</div>
-    </div>
-  </div>
-</header>
-
+<header class="apphead"><div class="brand"><span id="brandVisual" class="brandimg" style="background-image:url('icon-192.png');background-size:contain;background-position:center;background-repeat:no-repeat"></span><span class="brandword">Smiley<span class="brandaccent">Oh</span></span></div><div class="triprow"><div class="tripname" id="tripName">THAILAND 2026–27</div><button class="edittrip" onclick="editTrip()">✏️ Endre</button></div><div class="subtitle">Travel. Spend. Smile. · din komplette reiseoversikt</div><div class="data-actions"><button class="btn darkbtn" onclick="openTripSettings()">🖼️ Reisebilde</button><button class="btn darkbtn" onclick="exportProfile()">⬇️ Eksporter</button><button class="btn darkbtn" onclick="document.getElementById('importFile').click()">⬆️ Importer</button><input id="importFile" type="file" accept="application/json,.json" hidden></div></header>
 <main>
-  <div class="tabs">
-    <button id="stayTab" class="tab active" onclick="showTab('stays')">🏨 Overnatting</button>
-    <button id="flightTab" class="tab" onclick="showTab('flights')">✈️ Flyreiser</button>
-    <button id="transportTab" class="tab" onclick="showTab('transport')">🚗 Transport</button>
-    <button id="expenseTab" class="tab" onclick="showTab('expenses')">💳 Andre</button>
-    <button id="totalTab" class="tab" onclick="showTab('total')">📊 Total</button>
-  </div>
-  <section id="staysTab">
-  <div class="cards">
-    <div class="card stat-accent"><div class="metric" id="totalCost">–</div><div class="label">Totalt booket</div></div>
-    <div class="card"><div class="metric" id="totalNights">–</div><div class="label">Bookede netter</div></div>
-    <div class="card"><div class="metric" id="gapNights">–</div><div class="label">Ledige netter mellom bookinger</div></div>
-    <div class="card"><div class="metric" id="avgNight">–</div><div class="label">Snittpris per natt</div></div>
-  </div>
-
-  <div class="toolbar">
-    <button class="primary" onclick="openAdd()">＋ Ny booking</button>
-    <button class="secondary" onclick="openUpload()">📷 Last opp bookingbilder</button>
-    <button class="secondary" onclick="exportData()">⬇ Eksporter data</button>
-      <button class="secondary" onclick="document.getElementById('importFile').click()">⬆ Last opp data</button>
-    <label class="filebtn secondary" style="display:inline-block;margin:0">
-      <input id="importFile" type="file" accept=".json" hidden onchange="importData(this.files[0])">
-    </label>
-  </div>
-
-  <div class="card" style="margin-bottom:14px">
-    <div class="section-title" style="margin-top:0"><h2>Ledige perioder</h2><span class="small">beregnet mellom utsjekk og neste innsjekk</span></div>
-    <div id="gaps"></div>
-  </div>
-
-  <div class="section-title"><h2>Bookinger</h2><span class="small" id="countLabel"></span></div>
-  <div id="bookings"></div>
+<div class="tabs" aria-label="Hovedmeny">
+<button class="tab active" id="tabStay" onclick="showTab('stay')"><span class="tabicon">🏨</span><span class="tablabel">Bo</span></button><button class="tab" id="tabFlight" onclick="showTab('flight')"><span class="tabicon">✈️</span><span class="tablabel">Fly</span></button><button class="tab" id="tabTransport" onclick="showTab('transport')"><span class="tabicon">🚗</span><span class="tablabel">Transport</span></button><button class="tab" id="tabExpense" onclick="showTab('expense')"><span class="tabicon">💳</span><span class="tablabel">Andre</span></button><button class="tab" id="tabTotal" onclick="showTab('total')"><span class="tabicon">📊</span><span class="tablabel">Oversikt</span></button>
+</div>
+<section id="stayTab">
+<div class="hero"><h2>Din reiseoversikt</h2><p id="tripRange">Bookinger og kostnader samlet på ett sted.</p><div class="hero-actions"><button class="btn primary" onclick="openBookingChoices()">＋ Ny booking</button><button class="btn darkbtn" onclick="openUpload()">📷 Les booking</button></div></div>
+<div class="cards"><div class="card"><div class="metric" id="stayCost">0 kr</div><div class="label">Totalt booket</div></div><div class="card"><div class="metric" id="stayNights">0</div><div class="label">Bookede netter</div></div><div class="card"><div class="metric" id="gapNights">0</div><div class="label">Ledige netter</div></div><div class="card"><div class="metric" id="avgNight">0 kr</div><div class="label">Snittpris per natt</div></div></div>
+<div class="section"><h2>Ledige perioder</h2><span class="small">mellom bookingene</span></div><div class="card" id="gaps"></div>
+<div class="section"><h2>Bookinger</h2><span class="small" id="bookingCount"></span></div><div id="bookings"></div>
 </section>
-  <section id="flightsTab" class="hidden">
-    <div class="cards">
-      <div class="card"><div class="metric" id="flightCount">0</div><div class="label">Flyreiser</div></div>
-      <div class="card"><div class="metric" id="flightCost">0 kr</div><div class="label">Totalt fly</div></div>
-    </div>
-    <div class="toolbar"><button class="primary" onclick="openFlightAdd()">＋ Ny flyreise</button></div>
-    <div class="section-title"><h2>Flyreiser</h2><span class="small" id="flightCountLabel"></span></div>
-    <div id="flights"></div>
-  </section>
-
-  <section id="transportTabContent" class="hidden">
-    <div class="cards">
-      <div class="card"><div class="metric" id="transportCount">0</div><div class="label">Transportposter</div></div>
-      <div class="card"><div class="metric" id="transportCost">0 kr</div><div class="label">Totalt transport</div></div>
-    </div>
-    <div class="toolbar"><button class="primary" onclick="openTransportAdd()">＋ Ny transport</button></div>
-    <div class="section-title"><h2>Transport</h2><span class="small">Flyplass, taxi, ferge, buss, leiebil osv.</span></div>
-    <div id="transport"></div>
-  </section>
-
-  <section id="expensesTabContent" class="hidden">
-    <div class="cards">
-      <div class="card"><div class="metric" id="expenseCount">0</div><div class="label">Utgiftsposter</div></div>
-      <div class="card"><div class="metric" id="expenseCost">0 kr</div><div class="label">Totalt andre utgifter</div></div>
-    </div>
-    <div class="toolbar"><button class="primary" onclick="openExpenseAdd()">＋ Ny utgift</button></div>
-    <div class="section-title"><h2>Andre utgifter</h2><span class="small">Mat, vaksiner, alkohol, aktiviteter osv.</span></div>
-    <div id="expenses"></div>
-  </section>
-
-  <section id="totalTabContent" class="hidden">
-    <div class="card">
-      <div class="section-title" style="margin-top:0"><h2>📊 Totalkostnader</h2><span class="small">hele reisen samlet · kategorier</span></div>
-      <div class="chart-wrap"><div id="pieChart" class="pie"><div class="pie-center"><strong id="grandTotal">0 kr</strong><span class="small">totalt</span></div></div></div>
-      <div class="legend" id="costLegend"></div>
-      <div id="expenseBreakdown" class="expense-breakdown"></div>
-    </div>
-    <div class="cards" style="margin-top:12px">
-      <div class="card"><div class="metric" id="totalStayCost">0 kr</div><div class="label">🏨 Overnatting</div></div>
-      <div class="card"><div class="metric" id="totalFlightCost">0 kr</div><div class="label">✈️ Fly</div></div>
-      <div class="card"><div class="metric" id="totalTransportCost">0 kr</div><div class="label">🚗 Transport</div></div>
-      <div class="card"><div class="metric" id="totalExpenseCost">0 kr</div><div class="label">💳 Andre</div></div>
-    </div>
-  </section>
+<section id="flightTabContent" class="hidden"><div class="hero"><h2>✈️ Flyreiser</h2><p>Hold kontroll på alle fly og billetter.</p><div class="hero-actions"><button class="btn primary" onclick="openFlight()">＋ Ny flyreise</button></div></div><div class="cards"><div class="card"><div class="metric" id="flightCount">0</div><div class="label">Flyreiser</div></div><div class="card"><div class="metric" id="flightCost">0 kr</div><div class="label">Totalt fly</div></div></div><div class="section"><h2>Flyreiser</h2></div><div id="flights"></div></section>
+<section id="transportTab" class="hidden"><div class="hero"><h2>🚗 Transport</h2><p>Taxi, shuttle, ferge, buss, leiebil og annet.</p><div class="hero-actions"><button class="btn primary" onclick="openTransport()">＋ Ny transport</button></div></div><div class="cards"><div class="card"><div class="metric" id="transportCount">0</div><div class="label">Transportposter</div></div><div class="card"><div class="metric" id="transportCost">0 kr</div><div class="label">Totalt transport</div></div></div><div class="section"><h2>Transport</h2></div><div id="transports"></div></section>
+<section id="expenseTab" class="hidden"><div class="hero"><h2>💳 Andre utgifter</h2><p>Lag egne kategorier – f.eks. Mat, Visum, Vaksiner, Alkohol eller Aktiviteter.</p><div class="hero-actions"><button class="btn primary" onclick="openExpense()">＋ Ny utgift</button></div></div><div class="cards"><div class="card"><div class="metric" id="expenseCount">0</div><div class="label">Utgiftsposter</div></div><div class="card"><div class="metric" id="expenseCost">0 kr</div><div class="label">Totalt andre utgifter</div></div></div><div class="section"><h2>Utgifter</h2></div><div id="expenses"></div></section>
+<section id="totalTabContent" class="hidden"><div class="section"><h2>Totalkostnader</h2><span class="small">alle kategorier</span></div><div class="chart"><div class="donutwrap"><div class="donut" id="donut"><div class="donutcenter"><strong id="grandTotal">0 kr</strong><span class="small">totalt</span></div></div></div><div class="legend" id="legend"></div></div><div class="cards stats" id="totalStats"></div></section>
 </main>
 
-<div class="modal" id="flightModal" onclick="if(event.target===this)closeModal('flightModal')">
- <div class="sheet">
-  <div class="section-title" style="margin-top:0"><h2>Ny flyreise</h2><button class="secondary" onclick="closeModal('flightModal')">✕</button></div>
-  <input type="hidden" id="flightEditId">
-  <div class="grid2"><div><label>Dato</label><input id="flightDate" type="date"></div><div><label>Flynummer</label><input id="flightNo" placeholder="SK 455"></div></div>
-  <div class="grid2"><div><label>Flyselskap</label><input id="airline" placeholder="SAS"></div><div><label>Pris (NOK)</label><input id="flightPrice" type="number" min="0"></div></div>
-  <div class="grid2"><div><label>Fra</label><input id="flightFrom" placeholder="OSL"></div><div><label>Til</label><input id="flightTo" placeholder="BKK"></div></div>
-  <div class="grid2"><div><label>Avgang</label><input id="departTime" type="time"></div><div><label>Ankomst</label><input id="arriveTime" type="time"></div></div>
-  <label>Notat</label><input id="flightNote" placeholder="Terminal, bagasje, bookingreferanse osv.">
-  <div class="form-actions"><button class="secondary" onclick="closeModal('flightModal')">Avbryt</button><button class="primary" onclick="saveFlight()">Lagre</button></div>
- </div>
-</div>
+<div class="modal" id="tripModal"><div class="sheet"><div class="sheethead"><h2>⚙️ Reiseprofil</h2><button class="close" onclick="closeModal('tripModal')">✕</button></div><label>Navn på reisen</label><input id="tripNameInput" placeholder="Thailand 2026–27"><label>Bilde til heading</label><input id="tripImageInput" type="file" accept="image/*"><div id="tripImagePreview"></div><p class="note">Bildet lagres lokalt i appen og blir også tatt med når du eksporterer profilen.</p><div class="formactions"><button class="btn light" onclick="removeTripImage()">Fjern bilde</button><button class="btn primary" onclick="saveTripSettings()">Lagre</button></div></div></div>
 
-<div class="modal" id="transportModal" onclick="if(event.target===this)closeModal('transportModal')">
- <div class="sheet">
-  <div class="section-title" style="margin-top:0"><h2>Ny transport</h2><button class="secondary" onclick="closeModal('transportModal')">✕</button></div>
-  <input type="hidden" id="transportEditId">
-  <div class="grid2"><div><label>Dato</label><input id="transportDate" type="date"></div><div><label>Type</label><select id="transportType"><option>Flyplasstransport</option><option>Taxi</option><option>Ferge/båt</option><option>Buss</option><option>Leiebil</option><option>Privat transport</option><option>Annet</option></select></div></div>
-  <div class="grid2"><div><label>Fra</label><input id="transportFrom" placeholder="BKK"></div><div><label>Til</label><input id="transportTo" placeholder="Hotell"></div></div>
-  <div class="grid2"><div><label>Pris (NOK)</label><input id="transportPrice" type="number" min="0"></div><div><label>Leverandør</label><input id="transportProvider" placeholder="F.eks. hotel shuttle"></div></div>
-  <label>Notat</label><input id="transportNote" placeholder="F.eks. 2 voksne + 2 barn">
-  <div class="form-actions"><button class="secondary" onclick="closeModal('transportModal')">Avbryt</button><button class="primary" onclick="saveTransport()">Lagre</button></div>
- </div>
-</div>
+<div class="modal" id="choiceModal"><div class="sheet"><div class="sheethead"><h2>＋ Ny booking</h2><button class="close" onclick="closeModal('choiceModal')">✕</button></div><div class="choicegrid"><button class="choice" onclick="openManual();closeModal('choiceModal')"><b>✍️ Fyll inn selv</b><span>For en rask manuell registrering.</span></button><button class="choice" onclick="closeModal('choiceModal');openUpload()"><b>📷 Les fra bilde</b><span>Last opp skjermbilde og la OCR finne dato, navn og pris.</span></button><button class="choice" onclick="openPaste();closeModal('choiceModal')"><b>📋 Lim inn bekreftelsen</b><span>Kopier tekst fra Booking.com, e-post eller bekreftelse og lim den inn.</span></button></div></div></div>
 
-<div class="modal" id="expenseModal" onclick="if(event.target===this)closeModal('expenseModal')">
- <div class="sheet">
-  <div class="section-title" style="margin-top:0"><h2>Ny utgift</h2><button class="secondary" onclick="closeModal('expenseModal')">✕</button></div>
-  <input type="hidden" id="expenseEditId">
-  <div class="grid2"><div><label>Dato</label><input id="expenseDate" type="date"></div><div><label>Beløp (NOK)</label><input id="expensePrice" type="number" min="0" step="1"></div></div>
-  <label>Kategori</label><input id="expenseCategory" list="expenseCategories" placeholder="F.eks. Mat, vaksiner, alkohol">
-  <datalist id="expenseCategories"><option value="Mat"><option value="Vaksiner"><option value="Alkohol"><option value="Aktiviteter"><option value="Shopping"><option value="Forsikring"><option value="Visum"><option value="Annet"></datalist>
-  <label>Notat</label><input id="expenseNote" placeholder="F.eks. middag på Koh Lanta">
-  <div class="form-actions"><button class="secondary" onclick="closeModal('expenseModal')">Avbryt</button><button class="primary" onclick="saveExpense()">Lagre</button></div>
- </div>
-</div>
+<div class="modal" id="bookingModal"><div class="sheet"><div class="sheethead"><h2 id="bookingTitle">Ny booking</h2><button class="close" onclick="closeModal('bookingModal')">✕</button></div><input type="hidden" id="bookingId"><label>Hotell / sted</label><input id="bName" placeholder="Lanta Paradise Beach Resort"><div class="formgrid"><div><label>Innsjekk</label><input id="bStart" type="date"></div><div><label>Utsjekk</label><input id="bEnd" type="date"></div></div><div class="formgrid"><div><label>Totalpris (NOK)</label><input id="bPrice" type="number" min="0"></div><div><label>Land / område</label><input id="bPlace" placeholder="Thailand"></div></div><label>Booking-lenke (valgfritt)</label><input id="bLink" placeholder="https://www.booking.com/..."><label>Notat</label><input id="bNote" placeholder="Valgfritt"><label>Bilde (valgfritt)</label><input id="bImage" type="file" accept="image/*"><div id="bImagePreview"></div><div class="formactions"><button class="btn light" onclick="closeModal('bookingModal')">Avbryt</button><button class="btn primary" onclick="saveBooking()">Lagre booking</button></div></div></div>
 
-<div class="modal" id="tripModal" onclick="if(event.target===this)closeModal('tripModal')">
- <div class="sheet">
-  <div class="section-title" style="margin-top:0"><h2>Reisenavn</h2><button class="secondary" onclick="closeModal('tripModal')">✕</button></div>
-  <label>Navn på reisen</label><input id="tripNameInput" maxlength="40" placeholder="THAILAND 2026–27">
-  <label>Reisebilde</label>
-  <div class="image-picker">Velg et bilde som brukes som bakgrunn i toppen av appen.<br><input id="tripCoverInput" type="file" accept="image/*" onchange="previewTripCover(this)"></div>
-  <img id="tripCoverPreview" class="image-preview" alt="Forhåndsvisning">
-  <div class="form-actions"><button class="secondary" onclick="closeModal('tripModal')">Avbryt</button><button class="primary" onclick="saveTripName()">Lagre</button></div>
- </div>
-</div>
+<div class="modal" id="pasteModal"><div class="sheet"><div class="sheethead"><h2>📋 Lim inn booking</h2><button class="close" onclick="closeModal('pasteModal')">✕</button></div><p class="note">Kopier bookingbekreftelsen fra Booking.com eller e-posten og lim inn teksten under. ReiseKlar forsøker å finne hotell, datoer og pris automatisk.</p><textarea id="pasteText" placeholder="Lim inn hele bookingbekreftelsen her..."></textarea><div id="pasteResult" class="parsed"></div><div class="formactions"><button class="btn light" onclick="closeModal('pasteModal')">Avbryt</button><button class="btn primary" onclick="parsePasted()">🔎 Finn booking</button></div></div></div>
 
-<div class="modal" id="bookingModal" onclick="if(event.target===this)closeModal('bookingModal')">
- <div class="sheet">
-  <div class="section-title" style="margin-top:0"><h2 id="formTitle">Ny booking</h2><button class="secondary" onclick="closeModal('bookingModal')">✕</button></div>
-  <input type="hidden" id="editId">
-  <label>Hotell / sted</label><input id="name" placeholder="F.eks. Lanta Paradise Beach Resort">
-  <div class="grid2">
-   <div><label>Innsjekk</label><input id="start" type="date"></div>
-   <div><label>Utsjekk</label><input id="end" type="date"></div>
-  </div>
-  <div class="grid2">
-   <div><label>Pris (NOK)</label><input id="price" type="number" min="0" step="1"></div>
-   <div><label>Land / område</label><input id="place" placeholder="Thailand"></div>
-  </div>
-  <label>Notat</label><input id="note" placeholder="Valgfritt">
-  <label>Bilde av overnattingen</label>
-  <div class="image-picker">Legg gjerne til et bilde av hotellet eller stedet.<br><input id="bookingImageInput" type="file" accept="image/*" onchange="previewBookingImage(this)"></div>
-  <img id="bookingImagePreview" class="image-preview" alt="Forhåndsvisning">
-  <div class="form-actions"><button class="secondary" onclick="closeModal('bookingModal')">Avbryt</button><button class="primary" onclick="saveBooking()">Lagre</button></div>
- </div>
-</div>
+<div class="modal" id="uploadModal"><div class="sheet"><div class="sheethead"><h2>📷 Les booking fra bilde</h2><button class="close" onclick="closeModal('uploadModal')">✕</button></div><div class="drop"><b>Velg skjermbilde(r)</b><p class="note">OCR leser teksten og prøver å finne navn, datoer og pris.</p><input id="imageFiles" type="file" accept="image/*" multiple></div><div id="ocrStatus" class="note" style="margin-top:10px"></div><div class="progress"><div class="bar" id="ocrBar"></div></div><div id="ocrResult" class="parsed"></div><div class="formactions"><button class="btn light" onclick="closeModal('uploadModal')">Lukk</button><button class="btn primary" id="addParsed" onclick="addParsed()" disabled>Legg til</button></div></div></div>
 
-<div class="modal" id="uploadModal" onclick="if(event.target===this)closeModal('uploadModal')">
- <div class="sheet">
-  <div class="section-title" style="margin-top:0"><h2>📷 Legg til fra bookingbilder</h2><button class="secondary" onclick="closeModal('uploadModal')">✕</button></div>
-  <div class="drop" id="drop">
-    <b>Velg ett eller flere skjermbilder</b><br>
-    <span class="small">Appen leser teksten i bildet og forsøker å finne hotell, datoer og pris.</span><br><br>
-    <input id="imageFiles" type="file" accept="image/*" multiple>
-  </div>
-  <div id="ocrStatus" class="note" style="margin-top:10px"></div>
-  <div class="progress"><div class="bar" id="ocrBar"></div></div>
-  <div id="ocrResult"></div>
-  <div class="form-actions"><button class="secondary" onclick="closeModal('uploadModal')">Lukk</button><button class="primary" id="addParsed" onclick="addParsed()" disabled>Legg til funn</button></div>
-  <p class="note">Tips: Kontroller dato og pris etter OCR. Data lagres lokalt i nettleseren din.</p>
- </div>
-</div>
+<div class="modal" id="flightModal"><div class="sheet"><div class="sheethead"><h2>✈️ Ny flyreise</h2><button class="close" onclick="closeModal('flightModal')">✕</button></div><input type="hidden" id="fId"><div class="formgrid"><div><label>Dato</label><input id="fDate" type="date"></div><div><label>Flynummer</label><input id="fNo" placeholder="TG955"></div></div><div class="formgrid"><div><label>Fra</label><input id="fFrom" placeholder="OSL"></div><div><label>Til</label><input id="fTo" placeholder="BKK"></div></div><div class="formgrid"><div><label>Flyselskap</label><input id="fAirline" placeholder="THAI Airways"></div><div><label>Pris (NOK)</label><input id="fPrice" type="number"></div></div><div class="formgrid"><div><label>Avgang</label><input id="fDepart" type="time"></div><div><label>Ankomst</label><input id="fArrive" type="time"></div></div><div class="formactions"><button class="btn light" onclick="closeModal('flightModal')">Avbryt</button><button class="btn primary" onclick="saveFlight()">Lagre</button></div></div></div>
+<div class="modal" id="transportModal"><div class="sheet"><div class="sheethead"><h2>🚗 Ny transport</h2><button class="close" onclick="closeModal('transportModal')">✕</button></div><input type="hidden" id="tId"><div class="formgrid"><div><label>Dato</label><input id="tDate" type="date"></div><div><label>Type</label><select id="tType"><option>Flyplasstransport</option><option>Taxi</option><option>Ferge/båt</option><option>Buss</option><option>Leiebil</option><option>Privat transport</option><option>Annet</option></select></div></div><div class="formgrid"><div><label>Fra</label><input id="tFrom"></div><div><label>Til</label><input id="tTo"></div></div><div class="formgrid"><div><label>Pris (NOK)</label><input id="tPrice" type="number"></div><div><label>Leverandør</label><input id="tProvider"></div></div><div class="formactions"><button class="btn light" onclick="closeModal('transportModal')">Avbryt</button><button class="btn primary" onclick="saveTransport()">Lagre</button></div></div></div>
+<div class="modal" id="expenseModal"><div class="sheet"><div class="sheethead"><h2>💳 Ny utgift</h2><button class="close" onclick="closeModal('expenseModal')">✕</button></div><input type="hidden" id="eId"><label>Kategori</label><input id="eCategory" list="catList" placeholder="F.eks. Visum"><datalist id="catList"></datalist><label>Beskrivelse</label><input id="eNote" placeholder="F.eks. Thailand turistvisum"><div class="formgrid"><div><label>Dato</label><input id="eDate" type="date"></div><div><label>Beløp (NOK)</label><input id="ePrice" type="number"></div></div><div class="formactions"><button class="btn light" onclick="closeModal('expenseModal')">Avbryt</button><button class="btn primary" onclick="saveExpense()">Lagre</button></div></div></div>
 
 <script>
-const STORAGE='reisebookinger_v1';
-const TRIP_STORAGE='reise_trip_name_v1';
-const TRIP_IMAGE_STORAGE='reise_trip_image_v1';
-const seed=[];
-let tripName=localStorage.getItem(TRIP_STORAGE)||'THAILAND 2026–27';
-
-
-let bookings=JSON.parse(localStorage.getItem(STORAGE)||'null') || [];
-let flights=JSON.parse(localStorage.getItem('reise_fly_v2')||'null') || [];
-let transports=JSON.parse(localStorage.getItem('reise_transport_v2')||'null') || [];
-let expenses=JSON.parse(localStorage.getItem('reise_expenses_v1')||'null') || [];
-let parsed=[];
-
-function save(){localStorage.setItem(STORAGE,JSON.stringify(bookings));render()}
-function editTripName(){
- document.getElementById('tripNameInput').value=tripName;
- const p=document.getElementById('tripCoverPreview');
- p.src=tripCover||''; p.classList.toggle('show',!!tripCover);
- document.getElementById('tripModal').classList.add('show')
-}
-function compressImage(file,max=1400,quality=.78){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const scale=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);const x=c.getContext('2d');x.drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',quality))};im.onerror=reject;im.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
-function previewTripCover(input){const f=input.files&&input.files[0];if(!f)return;compressImage(f,1600,.8).then(data=>{document.getElementById('tripCoverPreview').src=data;document.getElementById('tripCoverPreview').classList.add('show');input.dataset.value=data})}
-function saveTripName(){const v=document.getElementById('tripNameInput').value.trim();if(v){tripName=v;localStorage.setItem(TRIP_STORAGE,tripName);document.getElementById('tripNameDisplay').textContent=tripName}
- const input=document.getElementById('tripCoverInput'); if(input.dataset.value){tripCover=input.dataset.value;localStorage.setItem(TRIP_IMAGE_STORAGE,tripCover)}
- const img=document.getElementById('tripCover');img.src=tripCover||'';img.classList.toggle('show',!!tripCover); closeModal('tripModal')}
-function nok(n){return new Intl.NumberFormat('nb-NO',{style:'currency',currency:'NOK',maximumFractionDigits:0}).format(n)}
-function d(s){return new Date(s+'T00:00:00')}
-function fmt(s){return d(s).toLocaleDateString('nb-NO',{day:'numeric',month:'short',year:'numeric'})}
-function nights(b){return Math.max(0,Math.round((d(b.end)-d(b.start))/86400000))}
-function sort(){bookings.sort((a,b)=>a.start.localeCompare(b.start))}
-function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-
-
-function showTab(tab){
- const ids=['stays','flights','transport','expenses','total'];
- ids.forEach(x=>{
-   const content=x==='stays'?'staysTab':x==='flights'?'flightsTab':x==='transport'?'transportTabContent':x==='expenses'?'expensesTabContent':'totalTabContent';
-   document.getElementById(content).classList.toggle('hidden',x!==tab);
- });
- document.getElementById('stayTab').classList.toggle('active',tab==='stays');
- document.getElementById('flightTab').classList.toggle('active',tab==='flights');
- document.getElementById('transportTab').classList.toggle('active',tab==='transport');
- document.getElementById('expenseTab').classList.toggle('active',tab==='expenses');
- document.getElementById('totalTab').classList.toggle('active',tab==='total');
- if(tab==='expenses') renderExpenses();
- if(tab==='total') renderTotals();
-}
-
-function saveFlights(){localStorage.setItem('reise_fly_v2',JSON.stringify(flights));renderFlights()}
-function openFlightAdd(){
- ['flightEditId','flightDate','flightNo','airline','flightPrice','flightFrom','flightTo','departTime','arriveTime','flightNote'].forEach(x=>document.getElementById(x).value='');
- document.getElementById('flightModal').classList.add('show');
-}
-function editFlight(id){
- const f=flights.find(x=>x.id===id); if(!f)return;
- const m={flightEditId:'id',flightDate:'date',flightNo:'flightNo',airline:'airline',flightPrice:'price',flightFrom:'from',flightTo:'to',departTime:'depart',arriveTime:'arrive',flightNote:'note'};
- Object.entries(m).forEach(([el,k])=>document.getElementById(el).value=f[k]??'');
- document.getElementById('flightModal').classList.add('show');
-}
-function saveFlight(){
- const f={id:document.getElementById('flightEditId').value||crypto.randomUUID(),
- date:document.getElementById('flightDate').value,flightNo:document.getElementById('flightNo').value.trim(),
- airline:document.getElementById('airline').value.trim(),price:Number(document.getElementById('flightPrice').value||0),
- from:document.getElementById('flightFrom').value.trim().toUpperCase(),to:document.getElementById('flightTo').value.trim().toUpperCase(),
- depart:document.getElementById('departTime').value,arrive:document.getElementById('arriveTime').value,note:document.getElementById('flightNote').value.trim()};
- if(!f.date||!f.from||!f.to){alert('Fyll inn dato, fra og til.');return}
- const i=flights.findIndex(x=>x.id===f.id); if(i>=0)flights[i]=f; else flights.push(f);
- flights.sort((a,b)=>(a.date+a.depart).localeCompare(b.date+b.depart)); saveFlights(); closeModal('flightModal');
-}
-function removeFlight(id){if(confirm('Slette denne flyreisen?')){flights=flights.filter(x=>x.id!==id);saveFlights()}}
-
-function saveTransports(){localStorage.setItem('reise_transport_v2',JSON.stringify(transports));
-   localStorage.setItem('reise_expenses_v1',JSON.stringify(expenses));renderTransport();renderTotals()}
-function openTransportAdd(){
- ['transportEditId','transportDate','transportFrom','transportTo','transportPrice','transportProvider','transportNote'].forEach(x=>document.getElementById(x).value='');
- document.getElementById('transportType').value='Flyplasstransport';
- document.getElementById('transportModal').classList.add('show');
-}
-function editTransport(id){
- const t=transports.find(x=>x.id===id); if(!t)return;
- const m={transportEditId:'id',transportDate:'date',transportType:'type',transportFrom:'from',transportTo:'to',transportPrice:'price',transportProvider:'provider',transportNote:'note'};
- Object.entries(m).forEach(([el,k])=>document.getElementById(el).value=t[k]??'');
- document.getElementById('transportModal').classList.add('show');
-}
-function saveTransport(){
- const t={id:document.getElementById('transportEditId').value||crypto.randomUUID(),date:document.getElementById('transportDate').value,
- type:document.getElementById('transportType').value,from:document.getElementById('transportFrom').value.trim(),
- to:document.getElementById('transportTo').value.trim(),price:Number(document.getElementById('transportPrice').value||0),
- provider:document.getElementById('transportProvider').value.trim(),note:document.getElementById('transportNote').value.trim()};
- if(!t.date||!t.type){alert('Fyll inn dato og type.');return}
- const i=transports.findIndex(x=>x.id===t.id);if(i>=0)transports[i]=t;else transports.push(t);
- transports.sort((a,b)=>a.date.localeCompare(b.date));saveTransports();closeModal('transportModal');
-}
-function removeTransport(id){if(confirm('Slette denne transportposten?')){transports=transports.filter(x=>x.id!==id);saveTransports()}}
-function renderTransport(){
- const total=transports.reduce((s,t)=>s+Number(t.price||0),0);
- document.getElementById('transportCount').textContent=transports.length;
- document.getElementById('transportCost').textContent=nok(total);
- document.getElementById('transport').innerHTML=transports.map(t=>`
- <div class="transport-card">
-  <div class="booking-top"><div><div class="name">${esc(t.type)}</div><div class="dates">${fmt(t.date)}${t.from||t.to?' · '+esc(t.from)+' → '+esc(t.to):''}</div></div><div class="price">${t.price?nok(t.price):'–'}</div></div>
-  ${t.provider?`<div class="small">🚐 ${esc(t.provider)}</div>`:''}${t.note?`<div class="small" style="margin-top:5px">${esc(t.note)}</div>`:''}
-  <div class="actions"><button class="secondary" onclick="editTransport('${t.id}')">Rediger</button><button class="danger" onclick="removeTransport('${t.id}')">Slett</button></div>
- </div>`).join('') || '<div class="card empty">Ingen transport lagt inn ennå.</div>';
-}
-function saveExpenses(){localStorage.setItem('reise_expenses_v1',JSON.stringify(expenses));renderExpenses();renderTotals()}
-function openExpenseAdd(){
- ['expenseEditId','expenseDate','expensePrice','expenseCategory','expenseNote'].forEach(x=>document.getElementById(x).value='');
- document.getElementById('expenseDate').value=new Date().toISOString().slice(0,10);
- document.getElementById('expenseModal').classList.add('show');
-}
-function editExpense(id){
- const e=expenses.find(x=>x.id===id); if(!e)return;
- const m={expenseEditId:'id',expenseDate:'date',expensePrice:'price',expenseCategory:'category',expenseNote:'note'};
- Object.entries(m).forEach(([el,k])=>document.getElementById(el).value=e[k]??'');
- document.getElementById('expenseModal').classList.add('show');
-}
-function saveExpense(){
- const e={id:document.getElementById('expenseEditId').value||crypto.randomUUID(),date:document.getElementById('expenseDate').value,price:Number(document.getElementById('expensePrice').value||0),category:document.getElementById('expenseCategory').value.trim(),note:document.getElementById('expenseNote').value.trim()};
- if(!e.date||!e.category||e.price<=0){alert('Fyll inn dato, kategori og et beløp.');return}
- const i=expenses.findIndex(x=>x.id===e.id); if(i>=0)expenses[i]=e; else expenses.push(e);
- expenses.sort((a,b)=>a.date.localeCompare(b.date)); saveExpenses(); closeModal('expenseModal');
-}
-function removeExpense(id){if(confirm('Slette denne utgiftsposten?')){expenses=expenses.filter(x=>x.id!==id);saveExpenses()}}
-function renderExpenses(){
- const total=expenses.reduce((s,e)=>s+Number(e.price||0),0);
- document.getElementById('expenseCount').textContent=expenses.length;
- document.getElementById('expenseCost').textContent=nok(total);
- document.getElementById('expenses').innerHTML=expenses.map(e=>`
- <div class="expense-card">
-  <div class="booking-top"><div><div class="name">${esc(e.category)}</div><div class="dates">${fmt(e.date)}</div></div><div class="price">${nok(e.price)}</div></div>
-  ${e.note?`<div class="small" style="margin-top:6px">${esc(e.note)}</div>`:''}
-  <div class="actions"><button class="secondary" onclick="editExpense('${e.id}')">Rediger</button><button class="danger" onclick="removeExpense('${e.id}')">Slett</button></div>
- </div>`).join('') || '<div class="card empty">Ingen andre utgifter lagt inn ennå.</div>';
-}
-function renderTotals(){
- const stay=bookings.reduce((s,b)=>s+Number(b.price||0),0), flight=flights.reduce((s,f)=>s+Number(f.price||0),0), transport=transports.reduce((s,t)=>s+Number(t.price||0),0), expense=expenses.reduce((s,e)=>s+Number(e.price||0),0), total=stay+flight+transport+expense;
- document.getElementById('grandTotal').textContent=nok(total);
- document.getElementById('totalStayCost').textContent=nok(stay);
- document.getElementById('totalFlightCost').textContent=nok(flight);
- document.getElementById('totalTransportCost').textContent=nok(transport);
- document.getElementById('totalExpenseCost').textContent=nok(expense);
-
- // Hent kategoriene brukeren selv har lagt inn under «Andre utgifter».
- const grouped={};
- expenses.forEach(e=>{
-   const raw=(e.category||'Annet').trim()||'Annet';
-   const key=raw.toLocaleLowerCase('nb-NO');
-   if(!grouped[key]) grouped[key]={label:raw,value:0};
-   grouped[key].value += Number(e.price||0);
- });
- const expenseCats=Object.values(grouped).sort((a,b)=>b.value-a.value);
- const palette=['#8b5cf6','#ec4899','#06b6d4','#f97316','#84cc16','#eab308','#14b8a6','#ef4444'];
- let visibleCats=expenseCats;
- let other=0;
- if(expenseCats.length>8){
-   visibleCats=expenseCats.slice(0,7);
-   other=expenseCats.slice(7).reduce((s,x)=>s+x.value,0);
-   visibleCats.push({label:'Øvrige utgifter',value:other});
- }
- const parts=[['Overnatting',stay,'#2f80ed'],['Fly',flight,'#27ae60'],['Transport',transport,'#f2994a'],...visibleCats.map((x,i)=>[x.label,x.value,palette[i%palette.length]])];
- const nonzero=parts.filter(x=>x[1]>0);
- let angle=0, stops=[];
- nonzero.forEach(x=>{const a=total?x[1]/total*360:0;stops.push(`${x[2]} ${angle}deg ${angle+a}deg`);angle+=a});
- document.getElementById('pieChart').style.background=total?'conic-gradient('+stops.join(',')+')':'#e8edf4';
- document.getElementById('costLegend').innerHTML=parts.map(x=>`<div class="legend-row"><span><i class="dot" style="background:${x[2]}"></i>${esc(x[0])}</span><strong>${nok(x[1])} · ${total?Math.round(x[1]/total*100):0}%</strong></div>`).join('');
-
- // Egen oversikt under grafen gjør mange kategorier lettere å lese enn en stor kakediagram-legende.
- document.getElementById('expenseBreakdown').innerHTML = expenseCats.length ? `
-   <div class="breakdown-title">Andre utgifter · kategorier</div>
-   <div class="breakdown-grid">${expenseCats.map((x,i)=>`<div class="breakdown-item"><span><i class="dot" style="background:${palette[i%palette.length]}"></i>${esc(x.label)}</span><strong>${nok(x.value)}</strong></div>`).join('')}</div>
- ` : '';
-}
-function renderFlights(){
- const total=flights.reduce((s,f)=>s+Number(f.price||0),0);
- document.getElementById('flightCount').textContent=flights.length;
- document.getElementById('flightCost').textContent=nok(total);
- document.getElementById('flightCountLabel').textContent=flights.length+' flyreiser';
- document.getElementById('flights').innerHTML=flights.map(f=>`
- <div class="flight">
-  <div class="booking-top">
-   <div><div class="flight-route">${esc(f.from)} <span class="flight-arrow">✈</span> ${esc(f.to)}</div>
-   <div class="small">${fmt(f.date)}${f.depart?' · '+esc(f.depart):''}${f.arrive?' → '+esc(f.arrive):''}</div></div>
-   <div class="flight-price">${f.price?nok(f.price):'–'}</div>
-  </div>
-  <div class="meta" style="margin-top:8px">
-   ${f.airline?`<span class="pill">🛫 ${esc(f.airline)}</span>`:''}
-   ${f.flightNo?`<span class="pill">✈️ ${esc(f.flightNo)}</span>`:''}
-  </div>
-  ${f.note?`<div class="small" style="margin-top:7px">${esc(f.note)}</div>`:''}
-  <div class="actions"><button class="secondary" onclick="editFlight('${f.id}')">Rediger</button><button class="danger" onclick="removeFlight('${f.id}')">Slett</button></div>
- </div>`).join('') || '<div class="card empty">Ingen flyreiser lagt inn ennå.</div>';
-}
-
-function findBooking(place,start,end){
-  const p=(place||'').trim();
-  const params=new URLSearchParams();
-  if(p) params.set('ss',p);
-  if(start) params.set('checkin',start);
-  if(end) params.set('checkout',end);
-  params.set('group_adults','2');
-  params.set('no_rooms','1');
-  window.open('https://www.booking.com/searchresults.html?'+params.toString(),'_blank');
-}
-function togglePriceDetails(id){const el=document.getElementById('price-'+id);if(el)el.classList.toggle('show')}
-
-function render(){
- sort();
- const total=bookings.reduce((s,b)=>s+Number(b.price||0),0);
- const n=bookings.reduce((s,b)=>s+nights(b),0);
- let gap=0;
- for(let i=1;i<bookings.length;i++) gap+=Math.max(0,Math.round((d(bookings[i].start)-d(bookings[i-1].end))/86400000));
- document.getElementById('totalCost').textContent=nok(total);
- document.getElementById('totalNights').textContent=n+' netter';
- document.getElementById('gapNights').textContent=gap+' netter';
- document.getElementById('avgNight').textContent=n?nok(total/n):'–';
- document.getElementById('countLabel').textContent=bookings.length+' bookinger';
-
- let gaps=[];
- for(let i=1;i<bookings.length;i++){
-   const days=Math.round((d(bookings[i].start)-d(bookings[i-1].end))/86400000);
-   if(days>0) gaps.push({start:bookings[i-1].end,end:bookings[i].start,n:days});
- }
- document.getElementById('gaps').innerHTML=gaps.length?gaps.map(g=>{
-   const prev=bookings.find(b=>b.end===g.start);
-   return `<div class="gap"><strong>⚠ Ledig periode</strong>
-   <div class="gap-date">${fmt(g.start)} → ${fmt(g.end)}</div>
-   <div class="gap-n">${g.n} netter uten booking</div>
-   <div class="gap-actions"><button class="primary" onclick="findBooking('${esc(prev?.place||'Thailand')}', '${g.start}', '${g.end}')">🔎 Finn booking</button></div></div>`;
- }).join(''):'<div class="empty">Ingen hull mellom bookingene 🎉</div>';
-
- const months={};
- bookings.forEach(b=>{
-   const key=b.start.slice(0,7);
-   (months[key]??=[]).push(b);
- });
- let out='';
- Object.keys(months).sort().forEach(key=>{
-   const arr=months[key];
-   const m=d(key+'-01').toLocaleDateString('nb-NO',{month:'long',year:'numeric'});
-   const cost=arr.reduce((s,b)=>s+Number(b.price||0),0);
-   out+=`<div class="month"><div class="monthhead"><span>${m[0].toUpperCase()+m.slice(1)}</span><span>${nok(cost)}</span></div><div class="monthbody">`;
-   arr.forEach(b=>{
-    const n=nights(b), perNight=n?b.price/n:0, week=perNight*7, mon=perNight*30.44;
-    out+=`<div class="booking">
-      ${b.image?`<div class="booking-image-wrap"><img class="booking-image" src="${b.image}" alt="${esc(b.name)}"><span class="image-badge">📷 Reisebilde</span></div>`:''}
-      <div class="booking-top"><div class="name">${esc(b.name)}</div><div class="price">${nok(perNight)}<span style="font-size:11px;font-weight:700;color:var(--muted)"> / natt</span></div></div>
-      <div class="dates">${fmt(b.start)} → ${fmt(b.end)}</div>
-      <div class="actual-label">Faktisk pris for bookingen</div>
-      <div class="actual-price">${nok(b.price)}</div>
-      <div class="meta">
-       <span class="pill">🛏 ${n} ${n===1?'natt':'netter'}</span>
-       ${b.place?`<span class="pill">📍 ${esc(b.place)}</span>`:''}
-      </div>
-      <div class="price-toggle" onclick="togglePriceDetails('${b.id}')">▾ Vis prisnivå</div>
-      <div class="price-details" id="price-${b.id}">
-        <div><span>Per natt</span><strong>${nok(perNight)}</strong></div>
-        <div><span>7 netter</span><strong>${nok(week)}</strong></div>
-        <div><span>30 dager</span><strong>${nok(mon)}</strong></div>
-      </div>
-      ${b.note?`<div class="small" style="margin-top:8px">${esc(b.note)}</div>`:''}
-      <div class="actions"><button class="primary" onclick="shareBooking('${b.id}')">↗ Del</button><button class="secondary" onclick="editBooking('${b.id}')">Rediger</button><button class="danger" onclick="removeBooking('${b.id}')">Slett</button></div>
-    </div>`;
-   });
-   out+='</div></div>';
- });
- document.getElementById('bookings').innerHTML=out||'<div class="card empty">Ingen bookinger ennå.</div>';
- renderFlights();
- renderTransport();
- renderExpenses();
- renderTotals();
-}
-function resetBookingImage(){currentBookingImage='';const input=document.getElementById('bookingImageInput');if(input){input.value='';delete input.dataset.value}const p=document.getElementById('bookingImagePreview');p.src='';p.classList.remove('show')}
-function previewBookingImage(input){const f=input.files&&input.files[0];if(!f)return;compressImage(f,1400,.78).then(data=>{currentBookingImage=data;input.dataset.value=data;const p=document.getElementById('bookingImagePreview');p.src=data;p.classList.add('show')})}
-function openAdd(){
- document.getElementById('formTitle').textContent='Ny booking'; document.getElementById('editId').value='';
- ['name','price','place','note','start','end'].forEach(x=>document.getElementById(x).value='');
- resetBookingImage(); document.getElementById('bookingModal').classList.add('show');
-}
-function editBooking(id){
- const b=bookings.find(x=>x.id===id); if(!b)return;
- document.getElementById('formTitle').textContent='Rediger booking'; document.getElementById('editId').value=id;
- ['name','start','end','price','place','note'].forEach(x=>document.getElementById(x).value=b[x]??'');
- currentBookingImage=b.image||''; const p=document.getElementById('bookingImagePreview');p.src=currentBookingImage||'';p.classList.toggle('show',!!currentBookingImage);
- document.getElementById('bookingModal').classList.add('show');
-}
-async function saveBooking(){
- const b={id:document.getElementById('editId').value||crypto.randomUUID(),name:document.getElementById('name').value.trim(),start:document.getElementById('start').value,end:document.getElementById('end').value,price:Number(document.getElementById('price').value||0),place:document.getElementById('place').value.trim(),note:document.getElementById('note').value.trim(),image:currentBookingImage||''};
- if(!b.name||!b.start||!b.end||b.end<=b.start){alert('Fyll inn hotell, datoer og en gyldig periode.');return}
- const idx=bookings.findIndex(x=>x.id===b.id); if(idx>=0) bookings[idx]=b; else bookings.push(b);
- save(); closeModal('bookingModal');
-}
-function removeBooking(id){if(confirm('Slette denne bookingen?')){bookings=bookings.filter(x=>x.id!==id);save()}}
-function shareBooking(id){
- const b=bookings.find(x=>x.id===id); if(!b)return;
- const n=nights(b);
- const lines=[
-   '🏨 Hvor skal vi bo?',
-   b.name || 'Overnatting',
-   '📅 '+fmt(b.start)+' → '+fmt(b.end),
-   '🛏 '+n+' '+(n===1?'natt':'netter')
- ];
- if(b.place) lines.push('📍 '+b.place);
- if(b.note) lines.push('📝 '+b.note);
- lines.push('', 'Delt fra ReiseKlar ✈️');
- const text=lines.join('\n');
- if(navigator.share){
-   navigator.share({title:'Overnatting – '+(b.name||'Reisebookinger'),text}).catch(()=>{});
- }else if(navigator.clipboard){
-   navigator.clipboard.writeText(text).then(()=>alert('Bookingsteksten er kopiert. Lim den inn i melding, WhatsApp eller Messenger.')).catch(()=>fallbackCopy(text));
- }else fallbackCopy(text);
-}
-function fallbackCopy(text){
- const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
- try{document.execCommand('copy');alert('Bookingsteksten er kopiert. Lim den inn i meldingen din.')}catch(e){alert(text)}
- ta.remove();
-}
-function closeModal(id){document.getElementById(id).classList.remove('show')}
-function openUpload(){document.getElementById('uploadModal').classList.add('show');document.getElementById('ocrResult').innerHTML='';document.getElementById('ocrStatus').textContent='';document.getElementById('ocrBar').style.width='0';document.getElementById('addParsed').disabled=true;parsed=[]}
-
-async function ensureTesseract(){
- if(window.Tesseract)return window.Tesseract;
- await new Promise((resolve,reject)=>{
-   const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s);
- });
- return window.Tesseract;
-}
-document.getElementById('imageFiles').addEventListener('change',e=>processImages([...e.target.files]));
-const drop=document.getElementById('drop');
-drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag')});
-drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));
-drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');processImages([...e.dataTransfer.files].filter(f=>f.type.startsWith('image/')))})
-
-async function processImages(files){
- if(!files.length)return;
- const status=document.getElementById('ocrStatus'), bar=document.getElementById('ocrBar'), result=document.getElementById('ocrResult');
- try{
-   const T=await ensureTesseract();
-   parsed=[];
-   for(let i=0;i<files.length;i++){
-     status.textContent=`Leser bilde ${i+1} av ${files.length}…`;
-     const worker=await T.createWorker('eng');
-     const r=await worker.recognize(files[i]);
-     await worker.terminate();
-     const text=r.data.text;
-     const found=parseOCR(text);
-     parsed.push(...found);
-     bar.style.width=((i+1)/files.length*100)+'%';
-   }
-   renderParsed(result); status.textContent=`Ferdig. Fant ${parsed.length} mulig(e) booking(er). Kontroller før du legger dem til.`;
-   document.getElementById('addParsed').disabled=!parsed.length;
- }catch(e){status.textContent='OCR kunne ikke startes. Du kan fortsatt legge inn booking manuelt.';console.error(e)}
-}
-
-const monthMap={jan:1,january:1,feb:2,february:2,mar:3,march:3,apr:4,april:4,may:5,mai:5,jun:6,june:6,jul:7,july:7,aug:8,august:8,sep:9,september:9,okt:10,oct:10,october:10,nov:11,november:11,des:12,dec:12,december:12};
-function parseDateToken(s,baseYear){
- let m=s.match(/(\d{1,2})[.\-\/\s]+([A-Za-z]{3,9})[.\-\/\s]+(\d{2,4})/i);
- if(!m)m=s.match(/(\d{1,2})[.\-\/](\d{1,2})[.\-\/](\d{2,4})/);
- if(m){
-  let day=+m[1], mon=isNaN(+m[2])?monthMap[m[2].toLowerCase()]:+m[2], year=+m[3]; if(year<100)year+=2000;
-  if(mon)return `${year}-${String(mon).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
- }
- return null;
-}
-function parseOCR(text){
- const lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean);
- const dates=[];
- const dateRegex=/\b\d{1,2}[.\-\/\s]+(?:[A-Za-z]{3,9}|\d{1,2})[.\-\/\s]+\d{2,4}\b/gi;
- for(const line of lines){for(const m of line.matchAll(dateRegex)){const v=parseDateToken(m[0]);if(v)dates.push(v)}}
- // Find consecutive date pairs and a nearby price/name.
- const out=[];
- for(let i=0;i<dates.length-1;i++){
-   const a=d(dates[i]),b=d(dates[i+1]); if(b<=a)continue;
-   const around=lines.slice(Math.max(0,i-2),Math.min(lines.length,i+4)).join(' ');
-   let p=around.match(/(?:NOK|kr)?\s*([\d][\d\s.,]{2,})\s*(?:NOK|kr)?/i);
-   let price=p?Number(p[1].replace(/\s/g,'').replace(/\.(?=\d{3}\b)/g,'').replace(',','.')):0;
-   // safer price candidates from whole nearby block
-   const nums=[...around.matchAll(/\b\d{1,2}(?:[ .]\d{3})+(?:,\d+)?\b|\b\d{3,5}(?:[.,]\d{2})?\b/g)].map(x=>Number(x[0].replace(/\s/g,'').replace(/\./g,'').replace(',','.'))).filter(x=>x>=500);
-   if(!price&&nums.length)price=nums[0];
-   const skip=['bestilling','bekreftet','booking','kr','nok','gratis','delsum','total','fly'];
-   let name=lines.find(x=>x.length>4&&!dateRegex.test(x)&&!/^\d/.test(x)&&!skip.includes(x.toLowerCase())&&!/parkeringsinformasjon/i.test(x)&&!/sjekk status/i.test(x));
-   if(!name)name='Booking fra bilde';
-   out.push({id:crypto.randomUUID(),name:name.replace(/\s+/g,' '),start:dates[i],end:dates[i+1],price:price||0,place:'',note:'OCR – kontroller opplysningene'});
-   break;
- }
- return out;
-}
-function renderParsed(el){
- if(!parsed.length){el.innerHTML='<div class="empty">Ingen tydelige bookingpar funnet.</div>';return}
- el.innerHTML=`<table><thead><tr><th>Sted</th><th>Dato</th><th>Pris</th></tr></thead><tbody>`+
- parsed.map((b,i)=>`<tr><td><input value="${esc(b.name)}" onchange="parsed[${i}].name=this.value"></td><td><input type="date" value="${b.start}" onchange="parsed[${i}].start=this.value"><input type="date" value="${b.end}" onchange="parsed[${i}].end=this.value"></td><td><input type="number" value="${b.price}" onchange="parsed[${i}].price=Number(this.value)"></td></tr>`).join('')+'</tbody></table>';
-}
-function addParsed(){
- parsed.filter(b=>b.name&&b.start&&b.end&&b.end>b.start).forEach(b=>bookings.push(b));
- save(); closeModal('uploadModal'); alert('Bookingene er lagt til. Kontroller oversikten og eventuelle hull.');
-}
-function exportData(){
- const payload={version:4,tripName,tripCover,bookings,flights,transports,expenses,exportedAt:new Date().toISOString()};
- const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
- const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='reisebookinger-backup.json';a.click();
- setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-}
-function importData(file){
- if(!file)return;
- const r=new FileReader();
- r.onload=()=>{
-  try{
-   const x=JSON.parse(r.result);
-   if(Array.isArray(x)){
-     bookings=x; flights=[]; transports=[]; expenses=[];
-   } else if(x && Array.isArray(x.bookings)){
-     if(x.tripName){tripName=x.tripName;localStorage.setItem(TRIP_STORAGE,tripName)}
-     if(x.tripCover){tripCover=x.tripCover;localStorage.setItem(TRIP_IMAGE_STORAGE,tripCover)}
-     bookings=x.bookings;
-     flights=Array.isArray(x.flights)?x.flights:[];
-     transports=Array.isArray(x.transports)?x.transports:[];
-     expenses=Array.isArray(x.expenses)?x.expenses:[];
-   } else throw 0;
-   localStorage.setItem(STORAGE,JSON.stringify(bookings));
-   localStorage.setItem('reise_fly_v2',JSON.stringify(flights));
-   localStorage.setItem('reise_transport_v2',JSON.stringify(transports));
-   localStorage.setItem('reise_expenses_v1',JSON.stringify(expenses));
-   document.getElementById('tripNameDisplay').textContent=tripName;
-const initialCover=document.getElementById('tripCover'); initialCover.src=tripCover||''; initialCover.classList.toggle('show',!!tripCover);
+const K={book:'reisebookinger_v1',flight:'reise_fly_v1',transport:'reise_transport_v1',expense:'reise_other_v1',name:'reise_trip_name_v1',hero:'reise_trip_hero_v1'};
+let bookings=JSON.parse(localStorage.getItem(K.book)||'null')||[];let flights=JSON.parse(localStorage.getItem(K.flight)||'null')||[];let transports=JSON.parse(localStorage.getItem(K.transport)||'null')||[];let expenses=JSON.parse(localStorage.getItem(K.expense)||'null')||[];let parsed=[];let tripImage=localStorage.getItem(K.hero)||'';
+const $=id=>document.getElementById(id);const nok=n=>new Intl.NumberFormat('nb-NO',{style:'currency',currency:'NOK',maximumFractionDigits:0}).format(Number(n)||0);const dt=s=>new Date(s+'T00:00:00');const fmt=s=>dt(s).toLocaleDateString('nb-NO',{day:'numeric',month:'short',year:'numeric'});const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));const nights=b=>Math.max(0,Math.round((dt(b.end)-dt(b.start))/86400000));
+$('tripName').textContent=localStorage.getItem(K.name)||'THAILAND 2026–27';applyTripImage();function applyTripImage(){const el=$('brandVisual');if(!el)return;el.className='brandimg';el.innerHTML='';el.style.backgroundImage="url('icon-192.png')";el.style.backgroundSize='contain';el.style.backgroundPosition='center';el.style.backgroundRepeat='no-repeat';}function editTrip(){openTripSettings()}function openTripSettings(){ $('tripNameInput').value=$('tripName').textContent; $('tripImagePreview').innerHTML=tripImage?`<img class="thumb" src="${tripImage}">`:''; $('tripImagePreview').dataset.data=tripImage||''; $('tripImageInput').value=''; $('tripModal').classList.add('show') }
+$('tripImageInput').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;compressImage(f,900,.78).then(data=>{$('tripImagePreview').innerHTML=`<img class="thumb" src="${data}">`;$('tripImagePreview').dataset.data=data})});
+function saveTripSettings(){const n=$('tripNameInput').value.trim()||'Min reise';localStorage.setItem(K.name,n);$('tripName').textContent=n;if($('tripImagePreview').dataset.data){tripImage=$('tripImagePreview').dataset.data;localStorage.setItem(K.hero,tripImage)}applyTripImage();closeModal('tripModal')}
+function removeTripImage(){tripImage='';localStorage.removeItem(K.hero);$('tripImagePreview').innerHTML='';$('tripImagePreview').dataset.data='';applyTripImage()}
+function compressImage(file,maxW=1200,quality=.78){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const scale=Math.min(1,maxW/im.width);const c=document.createElement('canvas');c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);const ctx=c.getContext('2d');ctx.drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',quality))};im.onerror=reject;im.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
+function saveAll(){localStorage.setItem(K.book,JSON.stringify(bookings));localStorage.setItem(K.flight,JSON.stringify(flights));localStorage.setItem(K.transport,JSON.stringify(transports));localStorage.setItem(K.expense,JSON.stringify(expenses));render()}
+function showTab(t){['stay','flight','transport','expense','total'].forEach(x=>{const el=x==='stay'?'stayTab':x==='flight'?'flightTabContent':x==='transport'?'transportTab':x==='expense'?'expenseTab':'totalTabContent';$(el).classList.toggle('hidden',x!==t);$('tab'+(x==='stay'?'Stay':x==='flight'?'Flight':x==='transport'?'Transport':x==='expense'?'Expense':'Total')).classList.toggle('active',x===t)});if(t==='total')renderTotals()}
+function openBookingChoices(){$('choiceModal').classList.add('show')}function openManual(id=null){$('bookingTitle').textContent=id?'Rediger booking':'Ny booking';['bookingId','bName','bStart','bEnd','bPrice','bPlace','bLink','bNote'].forEach(x=>$(x).value='');$('bImagePreview').innerHTML='';if(id){const b=bookings.find(x=>x.id===id);if(!b)return;$('bookingId').value=b.id;$('bName').value=b.name;$('bStart').value=b.start;$('bEnd').value=b.end;$('bPrice').value=b.price;$('bPlace').value=b.place||'';$('bLink').value=b.link||'';$('bNote').value=b.note||'';if(b.image){$('bImagePreview').innerHTML='<img class="thumb" src="'+b.image+'">';$('bImagePreview').dataset.data=b.image}}$('bookingModal').classList.add('show')}
+$('bImage').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;compressImage(f,1200,.78).then(data=>{$('bImagePreview').innerHTML='<img class="thumb" src="'+data+'">';$('bImagePreview').dataset.data=data})});
+function saveBooking(){const old=$('bookingId').value?bookings.find(x=>x.id===$('bookingId').value):null;const b={id:$('bookingId').value||crypto.randomUUID(),name:$('bName').value.trim(),start:$('bStart').value,end:$('bEnd').value,price:Number($('bPrice').value||0),place:$('bPlace').value.trim(),link:$('bLink').value.trim(),note:$('bNote').value.trim(),image:$('bImagePreview').dataset.data||old?.image||''};if(!b.name||!b.start||!b.end||b.end<=b.start)return alert('Fyll inn hotell og gyldige datoer.');const i=bookings.findIndex(x=>x.id===b.id);if(i>=0)bookings[i]=b;else bookings.push(b);saveAll();closeModal('bookingModal')}
+function shareBooking(id){const b=bookings.find(x=>x.id===id);if(!b)return;const text=`🏨 ${b.name}\n📅 ${fmt(b.start)} → ${fmt(b.end)}\n🛏 ${nights(b)} ${nights(b)===1?'natt':'netter'}\n💰 ${nok(b.price)}${b.place?'\n📍 '+b.place:''}${b.link?'\n🔗 '+b.link:''}`;if(navigator.share){navigator.share({title:b.name,text}).catch(()=>{})}else{navigator.clipboard?.writeText(text);alert('Bookinginformasjonen er kopiert.')}}
+function delBooking(id){if(confirm('Slette bookingen?')){bookings=bookings.filter(b=>b.id!==id);saveAll()}}
+function openPaste(){$('pasteText').value='';$('pasteResult').innerHTML='';$('pasteModal').classList.add('show')}
+function parsePasted(){const text=$('pasteText').value;const dates=[...text.matchAll(/\b(\d{1,2})[.\-/ ]+(\d{1,2})[.\-/ ]+(20\d{2})\b/g)].map(m=>`${m[3]}-${String(m[2]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`);const dates2=[...text.matchAll(/\b(\d{1,2})[. ]+(jan|feb|mar|apr|mai|jun|jul|aug|sep|okt|nov|des)[a-z]*[. ]+(20\d{2})/gi)];const map={jan:1,feb:2,mar:3,apr:4,mai:5,jun:6,jul:7,aug:8,sep:9,okt:10,nov:11,des:12};dates2.forEach(m=>dates.push(`${m[3]}-${String(map[m[2].toLowerCase()]).padStart(2,'0')}-${String(m[1]).padStart(2,'0')}`));const uniq=[...new Set(dates)].sort();const priceMatches=[...text.matchAll(/(?:NOK|kr)?\s*([0-9]{1,3}(?:[ .][0-9]{3})+|[0-9]{3,6})\s*(?:NOK|kr)?/gi)].map(m=>Number(m[1].replace(/[ .]/g,''))).filter(x=>x>=100);const lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean);let name=lines.find(x=>x.length>5&&!/^\d/.test(x)&&!/(booking|bekreftet|innsjekk|utsjekk|total|pris|NOK|kr)/i.test(x))||'Booking fra tekst';parsed=[{id:crypto.randomUUID(),name,start:uniq[0]||'',end:uniq[1]||'',price:priceMatches[0]||0,place:'',link:'',note:'Importert fra tekst'}];$('pasteResult').innerHTML=`<div class="parsedrow"><b>${esc(name)}</b><br>${uniq[0]||'Dato mangler'} → ${uniq[1]||'Dato mangler'}<br>${nok(priceMatches[0]||0)}<br><small>Kontroller opplysningene før lagring.</small><div class="formactions"><button class="btn primary" onclick="saveParsedText()">Legg til booking</button></div></div>`}
+function saveParsedText(){const b=parsed[0];if(!b.start||!b.end||b.end<=b.start)return alert('Fant ikke to gyldige datoer.');bookings.push(b);saveAll();closeModal('pasteModal')}
+async function openUpload(){$('uploadModal').classList.add('show');$('ocrStatus').textContent='';$('ocrResult').innerHTML='';$('ocrBar').style.width='0';$('addParsed').disabled=true;parsed=[]}
+$('imageFiles').addEventListener('change',e=>processImages([...e.target.files]));
+async function processImages(files){if(!files.length)return;try{if(!window.Tesseract){await new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s)})}parsed=[];for(let i=0;i<files.length;i++){ $('ocrStatus').textContent=`Leser bilde ${i+1} av ${files.length}…`;const w=await Tesseract.createWorker('eng');const r=await w.recognize(files[i]);await w.terminate();const f=parseOCR(r.data.text);parsed.push(...f);$('ocrBar').style.width=((i+1)/files.length*100)+'%'}renderParsed();$('ocrStatus').textContent=`Fant ${parsed.length} booking(er). Kontroller før lagring.`;$('addParsed').disabled=!parsed.length}catch(e){$('ocrStatus').textContent='Kunne ikke lese bildet. Prøv et tydeligere skjermbilde eller bruk «Lim inn bekreftelsen». ';}}
+function parseOCR(text){const lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean);const re=/\b\d{1,2}[.\-/ ]+(?:[A-Za-z]{3,9}|\d{1,2})[.\-/ ]+20\d{2}\b/g;const ds=[];for(const l of lines)for(const m of l.matchAll(re)){const x=m[0].match(/(\d{1,2})[.\-/ ]+([A-Za-z]{3,9}|\d{1,2})[.\-/ ]+(20\d{2})/);let mo=isNaN(+x[2])?{jan:1,feb:2,mar:3,apr:4,mai:5,jun:6,jul:7,aug:8,sep:9,okt:10,nov:11,des:12}[x[2].slice(0,3).toLowerCase()]:+x[2];if(mo)ds.push(`${x[3]}-${String(mo).padStart(2,'0')}-${String(x[1]).padStart(2,'0')}`)}const uniq=[...new Set(ds)].sort();const nums=[...text.matchAll(/\b\d{3,6}\b/g)].map(m=>+m[0]).filter(x=>x>=200);const name=lines.find(x=>x.length>5&&!/^\d/.test(x)&&!/(booking|bekreftet|innsjekk|utsjekk|total|pris|NOK|kr)/i.test(x))||'Booking fra bilde';return uniq.length>=2?[{id:crypto.randomUUID(),name,start:uniq[0],end:uniq[1],price:nums[0]||0,place:'',note:'OCR – kontroller'}]:[]}
+function renderParsed(){$('ocrResult').innerHTML=parsed.map((b,i)=>`<div class="parsedrow"><b>${esc(b.name)}</b><div class="formgrid"><input type="date" value="${b.start}" onchange="parsed[${i}].start=this.value"><input type="date" value="${b.end}" onchange="parsed[${i}].end=this.value"></div><input type="number" value="${b.price}" onchange="parsed[${i}].price=Number(this.value)"></div>`).join('')}
+function addParsed(){parsed.filter(b=>b.start&&b.end&&b.end>b.start).forEach(b=>bookings.push(b));saveAll();closeModal('uploadModal')}
+function openFlight(id=null){$('fId').value='';['fDate','fNo','fFrom','fTo','fAirline','fPrice','fDepart','fArrive'].forEach(x=>$(x).value='');if(id){const f=flights.find(x=>x.id===id);$('fId').value=f.id;$('fDate').value=f.date;$('fNo').value=f.no||'';$('fFrom').value=f.from;$('fTo').value=f.to;$('fAirline').value=f.airline||'';$('fPrice').value=f.price;$('fDepart').value=f.depart||'';$('fArrive').value=f.arrive||''}$('flightModal').classList.add('show')}
+function saveFlight(){const f={id:$('fId').value||crypto.randomUUID(),date:$('fDate').value,no:$('fNo').value.trim(),from:$('fFrom').value.trim().toUpperCase(),to:$('fTo').value.trim().toUpperCase(),airline:$('fAirline').value.trim(),price:Number($('fPrice').value||0),depart:$('fDepart').value,arrive:$('fArrive').value};if(!f.date||!f.from||!f.to)return alert('Fyll inn dato, fra og til.');const i=flights.findIndex(x=>x.id===f.id);if(i>=0)flights[i]=f;else flights.push(f);saveAll();closeModal('flightModal')}
+function delFlight(id){if(confirm('Slette flyreisen?')){flights=flights.filter(x=>x.id!==id);saveAll()}}
+function openTransport(id=null){$('tId').value='';['tDate','tFrom','tTo','tPrice','tProvider'].forEach(x=>$(x).value='');$('tType').value='Flyplasstransport';if(id){const t=transports.find(x=>x.id===id);$('tId').value=t.id;$('tDate').value=t.date;$('tFrom').value=t.from||'';$('tTo').value=t.to||'';$('tPrice').value=t.price;$('tProvider').value=t.provider||'';$('tType').value=t.type}$('transportModal').classList.add('show')}
+function saveTransport(){const t={id:$('tId').value||crypto.randomUUID(),date:$('tDate').value,type:$('tType').value,from:$('tFrom').value.trim(),to:$('tTo').value.trim(),price:Number($('tPrice').value||0),provider:$('tProvider').value.trim()};if(!t.date)return alert('Fyll inn dato.');const i=transports.findIndex(x=>x.id===t.id);if(i>=0)transports[i]=t;else transports.push(t);saveAll();closeModal('transportModal')}
+function delTransport(id){if(confirm('Slette transportposten?')){transports=transports.filter(x=>x.id!==id);saveAll()}}
+function openExpense(id=null){$('eId').value='';['eCategory','eNote','eDate','ePrice'].forEach(x=>$(x).value='');const cats=[...new Set(expenses.map(e=>e.category))];$('catList').innerHTML=cats.map(c=>`<option value="${esc(c)}">`).join('');if(id){const e=expenses.find(x=>x.id===id);$('eId').value=e.id;$('eCategory').value=e.category;$('eNote').value=e.note||'';$('eDate').value=e.date;$('ePrice').value=e.price}$('expenseModal').classList.add('show')}
+function saveExpense(){const e={id:$('eId').value||crypto.randomUUID(),category:$('eCategory').value.trim()||'Annet',note:$('eNote').value.trim(),date:$('eDate').value,price:Number($('ePrice').value||0)};if(!e.date||e.price<=0)return alert('Fyll inn dato og beløp.');const i=expenses.findIndex(x=>x.id===e.id);if(i>=0)expenses[i]=e;else expenses.push(e);saveAll();closeModal('expenseModal')}
+function delExpense(id){if(confirm('Slette utgiftsposten?')){expenses=expenses.filter(x=>x.id!==id);saveAll()}}
+function closeModal(id){$(id).classList.remove('show')}
+function render(){bookings.sort((a,b)=>a.start.localeCompare(b.start));const stay=bookings.reduce((s,b)=>s+Number(b.price||0),0),n=bookings.reduce((s,b)=>s+nights(b),0);let gap=0,g=[];for(let i=1;i<bookings.length;i++){const x=Math.round((dt(bookings[i].start)-dt(bookings[i-1].end))/86400000);if(x>0){gap+=x;g.push({start:bookings[i-1].end,end:bookings[i].start,n:x})}}$('stayCost').textContent=nok(stay);$('stayNights').textContent=n+' netter';$('gapNights').textContent=gap+' netter';$('avgNight').textContent=n?nok(stay/n):'0 kr';$('bookingCount').textContent=bookings.length+' bookinger';$('gaps').innerHTML=g.length?g.map(x=>`<div class="gap"><strong>⚠ ${x.n} ledige netter</strong><div class="range">${fmt(x.start)} → ${fmt(x.end)}</div><div class="sub">Ingen booking registrert i denne perioden.</div><button class="btn primary" onclick="findBooking('${x.start}','${x.end}')">🔎 Finn booking</button></div>`).join(''):'<div class="empty">Ingen hull mellom bookingene 🎉</div>';$('tripRange').textContent=bookings.length?`${fmt(bookings[0].start)} → ${fmt(bookings[bookings.length-1].end)} · ${bookings.length} bookinger`:'Legg inn din første booking.';let out='';const months={};bookings.forEach(b=>(months[b.start.slice(0,7)]??=[]).push(b));Object.keys(months).sort().forEach(k=>{const arr=months[k],m=dt(k+'-01').toLocaleDateString('nb-NO',{month:'long',year:'numeric'}),cost=arr.reduce((s,b)=>s+Number(b.price||0),0);out+=`<div class="month"><div class="monthhead"><span>${m}</span><span>${nok(cost)}</span></div>`;arr.forEach(b=>{const nn=nights(b),p=nn?b.price/nn:0;out+=`<div class="booking">${b.image?`<img class="thumb" src="${b.image}">`:''}<div class="bookingtop"><div><div class="name">${esc(b.name)}</div><div class="dates">${fmt(b.start)} → ${fmt(b.end)}</div></div><div class="price">${nok(b.price)}<div class="small">totalt</div></div></div><div class="pills"><span class="pill">🛏 ${nn} netter</span><span class="pill">${nok(p)} / natt</span><span class="pill">${nok(p*7)} / uke</span><span class="pill">${nok(p*30.44)} / 30 dager</span>${b.place?`<span class="pill">📍 ${esc(b.place)}</span>`:''}</div>${b.note?`<div class="small" style="margin-top:8px">${esc(b.note)}</div>`:''}<div class="actions"><button class="btn primary" onclick="shareBooking('${b.id}')">↗ Del</button>${b.link?`<button class="btn light" onclick="window.open('${esc(b.link)}','_blank')">🔗 Booking</button>`:''}<button class="btn light" onclick="openManual('${b.id}')">Rediger</button><button class="btn danger" onclick="delBooking('${b.id}')">Slett</button></div></div>`});out+='</div>'});$('bookings').innerHTML=out||'<div class="card empty">Ingen bookinger ennå.</div>';renderFlights();renderTransport();renderExpenses();renderTotals()}
+function renderFlights(){const total=flights.reduce((s,f)=>s+Number(f.price||0),0);$('flightCount').textContent=flights.length;$('flightCost').textContent=nok(total);$('flights').innerHTML=flights.map(f=>`<div class="flight"><div class="row"><div><div class="route">${esc(f.from)} ✈ ${esc(f.to)}</div><div class="dates">${fmt(f.date)}${f.depart?' · '+f.depart:''}${f.arrive?' → '+f.arrive:''}</div></div><div class="price">${nok(f.price)}</div></div><span class="tag">🛫 ${esc(f.airline||'Fly')}</span>${f.no?`<span class="tag">✈️ ${esc(f.no)}</span>`:''}<div class="actions"><button class="btn light" onclick="openFlight('${f.id}')">Rediger</button><button class="btn danger" onclick="delFlight('${f.id}')">Slett</button></div></div>`).join('')||'<div class="card empty">Ingen flyreiser.</div>'}
+function renderTransport(){const total=transports.reduce((s,t)=>s+Number(t.price||0),0);$('transportCount').textContent=transports.length;$('transportCost').textContent=nok(total);$('transports').innerHTML=transports.map(t=>`<div class="transport"><div class="row"><div><div class="name">${esc(t.type)}</div><div class="dates">${fmt(t.date)}${t.from||t.to?' · '+esc(t.from)+' → '+esc(t.to):''}</div></div><div class="price">${nok(t.price)}</div></div>${t.provider?`<span class="tag">🚐 ${esc(t.provider)}</span>`:''}<div class="actions"><button class="btn light" onclick="openTransport('${t.id}')">Rediger</button><button class="btn danger" onclick="delTransport('${t.id}')">Slett</button></div></div>`).join('')||'<div class="card empty">Ingen transport.</div>'}
+function renderExpenses(){const total=expenses.reduce((s,e)=>s+Number(e.price||0),0);$('expenseCount').textContent=expenses.length;$('expenseCost').textContent=nok(total);$('expenses').innerHTML=expenses.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(e=>`<div class="expense"><div class="row"><div><div class="expensecat"><span class="catdot" style="background:${catColor(e.category)}"></span>${esc(e.category)}</div><div class="dates">${fmt(e.date)}</div>${e.note?`<div class="small">${esc(e.note)}</div>`:''}</div><div class="price">${nok(e.price)}</div></div><div class="actions"><button class="btn light" onclick="openExpense('${e.id}')">Rediger</button><button class="btn danger" onclick="delExpense('${e.id}')">Slett</button></div></div>`).join('')||'<div class="card empty">Ingen andre utgifter.</div>'}
+function catColor(c){let h=0;for(let i=0;i<c.length;i++)h=(h*31+c.charCodeAt(i))%360;return `hsl(${h} 55% 55%)`}
+function renderTotals(){const cats=[['Overnatting',bookings.reduce((s,b)=>s+Number(b.price||0),0),'#2f80ed'],['Fly',flights.reduce((s,f)=>s+Number(f.price||0),0),'#2caf69'],['Transport',transports.reduce((s,t)=>s+Number(t.price||0),0),'#f2a44a']];const map={};expenses.forEach(e=>map[e.category]=(map[e.category]||0)+Number(e.price||0));Object.entries(map).forEach(([k,v])=>cats.push([k,v,catColor(k)]));const total=cats.reduce((s,x)=>s+x[1],0);$('grandTotal').textContent=nok(total);let angle=0,stops=[];cats.filter(x=>x[1]>0).forEach(x=>{const a=x[1]/total*360;stops.push(`${x[2]} ${angle}deg ${angle+a}deg`);angle+=a});$('donut').style.background=total?`conic-gradient(${stops.join(',')})`:'#e8edf4';$('legend').innerHTML=cats.filter(x=>x[1]>0).map(x=>`<div class="legendrow"><div class="legendname"><span class="legenddot" style="background:${x[2]}"></span>${esc(x[0])}</div><strong>${nok(x[1])} · ${Math.round(x[1]/total*100)}%</strong></div>`).join('')||'<div class="empty">Ingen kostnader registrert.</div>';$('totalStats').innerHTML=cats.filter(x=>x[1]>0).map(x=>`<div class="card"><div class="metric">${nok(x[1])}</div><div class="label">${esc(x[0])}</div></div>`).join('')}
+function exportProfile(){const payload={format:'SmileyOh',version:2,exportedAt:new Date().toISOString(),tripName:localStorage.getItem(K.name)||$('tripName').textContent,tripImage:tripImage,bookings,flights,transports,expenses};const blob=new Blob([JSON.stringify(payload)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=((payload.tripName||'reiseprofil').replace(/[^a-z0-9æøå ]/gi,'').trim().replace(/\s+/g,'-')||'reiseprofil')+'.smileyoh.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+$('importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||!Array.isArray(d.bookings))throw new Error('Ugyldig fil');if(!confirm('Importere denne reisen? Dette erstatter dataene som ligger lokalt i appen.'))return;bookings=d.bookings||[];flights=d.flights||[];transports=d.transports||[];expenses=d.expenses||[];localStorage.setItem(K.book,JSON.stringify(bookings));localStorage.setItem(K.flight,JSON.stringify(flights));localStorage.setItem(K.transport,JSON.stringify(transports));localStorage.setItem(K.expense,JSON.stringify(expenses));if(d.tripName){localStorage.setItem(K.name,d.tripName);$('tripName').textContent=d.tripName}tripImage=d.tripImage||'';if(tripImage)localStorage.setItem(K.hero,tripImage);else localStorage.removeItem(K.hero);applyTripImage();render();alert('Profilen er importert – bilder og data er med.')}catch(err){alert('Kunne ikke importere filen.')}};r.readAsText(f);e.target.value=''})
+function findBooking(a,b){window.open(`https://www.booking.com/searchresults.html?checkin=${a}&checkout=${b}`,'_blank')}
 render();
-   alert('Data importert: '+bookings.length+' overnattinger, '+flights.length+' flyreiser og '+transports.length+' transportposter og '+expenses.length+' andre utgifter.');
-  }catch(e){alert('Kunne ikke importere filen. Velg en gyldig Reisebookinger-backup (.json).')}
- };
- r.readAsText(file);
-}
-document.getElementById('tripNameDisplay').textContent=tripName;
-const initialCover=document.getElementById('tripCover'); initialCover.src=tripCover||''; initialCover.classList.toggle('show',!!tripCover);
-render();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
 </script>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-}
-</script>
-</body>
-</html>
+</body></html>

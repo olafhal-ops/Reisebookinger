@@ -1,15 +1,24 @@
 {
-  "name": "ReiseKlar",
-  "short_name": "ReiseKlar",
-  "description": "Oversikt over overnatting, fly, transport og totalkostnader.",
+  "name": "SmileyOh — Travel. Spend. Smile.",
+  "short_name": "SmileyOh",
+  "description": "Din komplette reiseoversikt for booking, fly, transport og utgifter.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#f5f7fb",
-  "theme_color": "#0e1b2d",
+  "background_color": "#f7f5ef",
+  "theme_color": "#102d2a",
   "icons": [
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }
