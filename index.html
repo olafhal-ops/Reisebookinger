@@ -7,46 +7,59 @@
 <title>ReiseKlar – reiseoversikt</title>
 <style>
 :root{
-  --bg:#f4f6f8; --surface:#ffffff; --surface2:#f8fafc; --ink:#172033; --muted:#7a8494;
-  --line:#e7ebf0; --navy:#0e1b2d; --blue:#1769d3; --blue-soft:#edf4ff;
-  --gold:#c69a4b; --danger:#b94c55; --danger-soft:#fff2f3; --success:#27845f;
-  --shadow:0 12px 34px rgba(16,30,50,.075); --shadow-sm:0 5px 18px rgba(16,30,50,.055);
+  --bg:#f3efe8; --surface:#fffdf8; --surface2:#f7f3eb; --ink:#17241f; --muted:#78827b;
+  --line:#e4ded2; --navy:#16352f; --blue:#587a70; --blue-soft:#eef4f0;
+  --gold:#c4934f; --danger:#b55a55; --danger-soft:#fff2ef; --success:#4e7d65;
+  --sand:#d8c5a4; --sage:#789486; --clay:#b9795d;
+  --shadow:0 18px 50px rgba(42,49,43,.09); --shadow-sm:0 8px 24px rgba(42,49,43,.065);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg);scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(circle at 50% -10%,#ffffff 0,#f4f6f8 42%,#eef1f5 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);font-size:15px;line-height:1.4}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#fffdf8 0,#f3efe8 48%,#ece7dd 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);font-size:15px;line-height:1.4}
 button,input,select{font:inherit}
 button{cursor:pointer}
-header{position:sticky;top:0;z-index:20;background:rgba(14,27,45,.96);color:#fff;padding:18px 18px 17px;box-shadow:0 8px 24px rgba(7,17,30,.16);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(22,53,47,.97),rgba(18,45,40,.96));color:#fff;padding:18px 18px 17px;box-shadow:0 10px 30px rgba(18,45,40,.18);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;max-width:920px;margin:auto}
 .brand{display:flex;align-items:center;gap:9px}.brand-icon{font-size:23px;filter:saturate(.9)}.brand-title{font-size:20px;font-weight:850;letter-spacing:-.4px}
 .trip-name{display:flex;align-items:center;gap:8px;margin-top:9px}.trip-name strong{font-size:21px;letter-spacing:-.5px}.trip-edit{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:800}
 .sub{color:rgba(255,255,255,.62);font-size:12px;margin-top:5px;letter-spacing:.1px}
 main{max-width:920px;margin:auto;padding:16px 14px 90px}
 .tabs{position:sticky;top:93px;z-index:15;display:flex;gap:3px;background:rgba(255,255,255,.88);border:1px solid rgba(222,227,234,.9);border-radius:18px;padding:5px;margin-bottom:18px;box-shadow:0 8px 25px rgba(18,32,52,.08);overflow-x:auto;scrollbar-width:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto;border:0;background:transparent;color:#778193;padding:11px 13px;border-radius:13px;font-weight:800;font-size:13px;letter-spacing:-.1px;transition:.18s}.tab.active{background:var(--navy);color:#fff;box-shadow:0 5px 14px rgba(14,27,45,.16)}
+.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto;border:0;background:transparent;color:#778193;padding:11px 13px;border-radius:13px;font-weight:800;font-size:13px;letter-spacing:-.1px;transition:.18s}.tab.active{background:var(--navy);color:#fff;box-shadow:0 7px 18px rgba(22,53,47,.18)}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow-sm)}
-.metric{font-size:28px;line-height:1.05;font-weight:880;letter-spacing:-1px}.label{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.25}.stat-accent{background:linear-gradient(145deg,#fff,#f4f8ff);border-color:#dce8fa}
+.metric{font-size:28px;line-height:1.05;font-weight:880;letter-spacing:-1px}.label{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.25}.stat-accent{background:linear-gradient(145deg,#fffdf8,#eef4ef);border-color:#d8e3dc}
 .toolbar{display:flex;gap:8px;overflow-x:auto;padding:1px 0 15px;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}
-button,.filebtn{border-radius:12px;padding:11px 14px;font-weight:800;font-size:13px;white-space:nowrap;transition:transform .12s,box-shadow .12s,background .12s}.primary{background:var(--navy);color:#fff;border:1px solid var(--navy);box-shadow:0 7px 16px rgba(14,27,45,.15)}.primary:active,.secondary:active{transform:translateY(1px)}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 2px 8px rgba(20,35,55,.03)}.danger{background:var(--danger-soft);color:var(--danger);border:1px solid #f7dfe2}
+button,.filebtn{border-radius:12px;padding:11px 14px;font-weight:800;font-size:13px;white-space:nowrap;transition:transform .12s,box-shadow .12s,background .12s}.primary{background:var(--navy);color:#fff;border:1px solid var(--navy);box-shadow:0 9px 18px rgba(22,53,47,.16)}.primary:active,.secondary:active{transform:translateY(1px)}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 2px 8px rgba(20,35,55,.03)}.danger{background:var(--danger-soft);color:var(--danger);border:1px solid #f7dfe2}
 .section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:22px 3px 10px}.section-title h2,h2{font-size:18px;margin:0;letter-spacing:-.35px}.small{font-size:12px;color:var(--muted)}
 .booking,.flight,.transport-card,.expense-card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:20px;padding:17px;margin-bottom:10px;box-shadow:var(--shadow-sm)}
-.booking-top{display:flex;justify-content:space-between;gap:14px}.name{font-weight:860;font-size:17px;letter-spacing:-.35px}.price,.flight-price{font-weight:880;font-size:18px;white-space:nowrap;letter-spacing:-.35px}.dates{color:#1d67c8;font-weight:800;margin:6px 0 10px;font-size:14px}.actual-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:850}.actual-price{font-size:22px;font-weight:900;margin:2px 0 10px;letter-spacing:-.6px}
-.meta{display:flex;gap:6px;flex-wrap:wrap}.pill{background:#f2f5f8;border:1px solid #e9edf2;border-radius:999px;padding:6px 9px;font-size:12px;color:#4f5c6e}.actions{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}.actions button{padding:8px 10px;font-size:12px}
+.booking-top{display:flex;justify-content:space-between;gap:14px}.name{font-weight:860;font-size:17px;letter-spacing:-.35px}.price,.flight-price{font-weight:880;font-size:18px;white-space:nowrap;letter-spacing:-.35px}.dates{color:#55786e;font-weight:800;margin:6px 0 10px;font-size:14px}.actual-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:850}.actual-price{font-size:22px;font-weight:900;margin:2px 0 10px;letter-spacing:-.6px}
+.meta{display:flex;gap:6px;flex-wrap:wrap}.pill{background:#f1eee7;border:1px solid #e9edf2;border-radius:999px;padding:6px 9px;font-size:12px;color:#4f5c6e}.actions{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}.actions button{padding:8px 10px;font-size:12px}
 .price-toggle{margin-top:10px;color:#667285;font-size:12px;font-weight:800;cursor:pointer}.price-details{display:none;margin-top:9px;padding:10px 12px;border-radius:13px;background:#f7f9fb;border:1px solid #edf0f4;font-size:12px;color:#4b586b}.price-details.show{display:block}.price-details div{display:flex;justify-content:space-between;padding:3px 0}
 .gap{border:1px solid #ead8d6;background:linear-gradient(145deg,#fffafa,#fff6f5);border-radius:20px;padding:16px;margin:8px 0;color:#7e4947}.gap strong{font-size:13px}.gap-date{font-size:19px;font-weight:880;margin:5px 0;letter-spacing:-.35px}.gap-n{font-size:12px;color:#966563}.gap-actions{margin-top:12px}
-.month{margin-bottom:14px}.monthhead{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#eef3f8;border-radius:14px;font-weight:850;color:#26344a}.monthbody{padding-top:8px}
+.month{margin-bottom:14px}.monthhead{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#ebe6dc;border-radius:14px;font-weight:850;color:#26344a}.monthbody{padding-top:8px}
 .flight-route{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:900;letter-spacing:-.55px}.flight-arrow{color:var(--blue)}
 .chart-wrap{display:flex;justify-content:center;align-items:center;padding:18px 0 8px}.pie{width:min(280px,72vw);height:min(280px,72vw);border-radius:50%;position:relative;box-shadow:0 14px 35px rgba(20,35,55,.10)}.pie:after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}.pie-center{position:absolute;inset:25%;border-radius:50%;background:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:0 4px 16px rgba(20,35,55,.07)}.pie-center strong{font-size:23px;letter-spacing:-.7px}.legend{display:grid;gap:10px;margin-top:14px}.legend-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 0}.dot{width:11px;height:11px;border-radius:50%;display:inline-block;margin-right:8px}
-.empty{padding:26px;text-align:center;color:var(--muted);background:#fff;border:1px dashed #dce2e9;border-radius:18px}
+.empty{padding:26px;text-align:center;color:var(--muted);background:#fffdf8;border:1px dashed #dce2e9;border-radius:18px}
 .modal{position:fixed;inset:0;background:rgba(7,15,25,.52);display:none;align-items:flex-end;justify-content:center;z-index:100;padding:12px}.modal.show{display:flex}.sheet{width:min(720px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:24px 24px 16px 16px;padding:20px;box-shadow:0 -12px 45px rgba(0,0,0,.2)}
 label{display:block;font-size:12px;font-weight:850;color:#596577;margin:10px 0 5px}input,select{width:100%;padding:12px 13px;border:1px solid #dfe5ec;border-radius:12px;background:#fbfcfd;color:var(--ink);outline:none}input:focus,select:focus{border-color:#8fb6e9;box-shadow:0 0 0 3px #eaf3ff}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.drop{border:1.5px dashed #cfd8e3;border-radius:16px;padding:20px;text-align:center;background:#f8fafc}.progress{height:8px;background:#edf0f3;border-radius:99px;overflow:hidden;margin-top:10px}.bar{height:100%;width:0;background:var(--blue);transition:width .2s}
 .note{font-size:12px;color:var(--muted)}
+
+.trip-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.42;display:none}.trip-cover.show{display:block}.header-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,53,47,.98) 0%,rgba(22,53,47,.90) 48%,rgba(22,53,47,.58) 100%);pointer-events:none}.header-content{position:relative;z-index:2}.header-row{position:relative;overflow:hidden;border-radius:18px;padding:2px}
+.booking-image{width:100%;height:150px;border-radius:16px;object-fit:cover;display:block;margin-bottom:13px;background:#ebe6dc}.booking-image-wrap{position:relative}.booking-image-wrap .image-badge{position:absolute;left:10px;bottom:10px;background:rgba(22,53,47,.82);color:#fff;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800;backdrop-filter:blur(8px)}
+.image-preview{display:none;width:100%;max-height:180px;object-fit:cover;border-radius:14px;margin-top:8px;border:1px solid var(--line)}.image-preview.show{display:block}.image-picker{border:1px dashed #cfc6b6;background:#faf7f0;border-radius:14px;padding:14px;text-align:center}.image-picker input{margin-top:8px}
 @media (max-width:560px){
   header{padding:16px 16px 15px}.brand-title{font-size:19px}.trip-name strong{font-size:20px}main{padding:13px 12px 90px}.tabs{top:87px;margin-left:-2px;margin-right:-2px}.tab{font-size:12px;padding:10px 11px}.cards{gap:9px}.card{padding:15px;border-radius:18px}.metric{font-size:25px}.booking,.flight,.transport-card,.expense-card{padding:15px;border-radius:18px}.name{font-size:16px}.grid2{grid-template-columns:1fr}.sheet{padding:18px;border-radius:22px 22px 12px 12px}.section-title{margin-top:18px}.pie{width:min(270px,78vw);height:min(270px,78vw)}}
 @media (max-width:380px){.tab{padding-left:9px;padding-right:9px}.metric{font-size:23px}.trip-edit{font-size:10px}}
 .hidden{display:none!important}
 .badge-ok{color:var(--success);font-weight:800}.badge-gap{color:var(--danger);font-weight:800}
+
+.expense-breakdown{margin-top:20px;padding-top:18px;border-top:1px solid #e7ebf1}
+.breakdown-title{font-size:14px;font-weight:800;color:#667085;margin-bottom:10px}
+.breakdown-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.breakdown-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 12px;background:#f7f9fc;border-radius:14px;font-size:14px}
+.breakdown-item span{display:flex;align-items:center;gap:7px;min-width:0}
+.breakdown-item strong{white-space:nowrap}
+@media(max-width:520px){.breakdown-grid{grid-template-columns:1fr}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0b63ce">
@@ -58,7 +71,9 @@ label{display:block;font-size:12px;font-weight:850;color:#596577;margin:10px 0 5
 <body>
 <header>
   <div class="header-row">
-    <div>
+    <img id="tripCover" class="trip-cover" alt="Reisebilde">
+    <div class="header-overlay"></div>
+    <div class="header-content">
       <div class="brand"><span class="brand-icon">✈️</span><span class="brand-title">ReiseKlar</span></div>
       <div class="trip-name"><strong id="tripNameDisplay">THAILAND 2026–27</strong><button class="trip-edit" onclick="editTripName()">✏️ Endre</button></div>
       <div class="sub">Din komplette reiseoversikt · bookinger · kostnader</div>
@@ -132,9 +147,10 @@ label{display:block;font-size:12px;font-weight:850;color:#596577;margin:10px 0 5
 
   <section id="totalTabContent" class="hidden">
     <div class="card">
-      <div class="section-title" style="margin-top:0"><h2>📊 Totalkostnader</h2><span class="small">hele reisen samlet</span></div>
+      <div class="section-title" style="margin-top:0"><h2>📊 Totalkostnader</h2><span class="small">hele reisen samlet · kategorier</span></div>
       <div class="chart-wrap"><div id="pieChart" class="pie"><div class="pie-center"><strong id="grandTotal">0 kr</strong><span class="small">totalt</span></div></div></div>
       <div class="legend" id="costLegend"></div>
+      <div id="expenseBreakdown" class="expense-breakdown"></div>
     </div>
     <div class="cards" style="margin-top:12px">
       <div class="card"><div class="metric" id="totalStayCost">0 kr</div><div class="label">🏨 Overnatting</div></div>
@@ -186,6 +202,9 @@ label{display:block;font-size:12px;font-weight:850;color:#596577;margin:10px 0 5
  <div class="sheet">
   <div class="section-title" style="margin-top:0"><h2>Reisenavn</h2><button class="secondary" onclick="closeModal('tripModal')">✕</button></div>
   <label>Navn på reisen</label><input id="tripNameInput" maxlength="40" placeholder="THAILAND 2026–27">
+  <label>Reisebilde</label>
+  <div class="image-picker">Velg et bilde som brukes som bakgrunn i toppen av appen.<br><input id="tripCoverInput" type="file" accept="image/*" onchange="previewTripCover(this)"></div>
+  <img id="tripCoverPreview" class="image-preview" alt="Forhåndsvisning">
   <div class="form-actions"><button class="secondary" onclick="closeModal('tripModal')">Avbryt</button><button class="primary" onclick="saveTripName()">Lagre</button></div>
  </div>
 </div>
@@ -204,6 +223,9 @@ label{display:block;font-size:12px;font-weight:850;color:#596577;margin:10px 0 5
    <div><label>Land / område</label><input id="place" placeholder="Thailand"></div>
   </div>
   <label>Notat</label><input id="note" placeholder="Valgfritt">
+  <label>Bilde av overnattingen</label>
+  <div class="image-picker">Legg gjerne til et bilde av hotellet eller stedet.<br><input id="bookingImageInput" type="file" accept="image/*" onchange="previewBookingImage(this)"></div>
+  <img id="bookingImagePreview" class="image-preview" alt="Forhåndsvisning">
   <div class="form-actions"><button class="secondary" onclick="closeModal('bookingModal')">Avbryt</button><button class="primary" onclick="saveBooking()">Lagre</button></div>
  </div>
 </div>
@@ -227,6 +249,7 @@ label{display:block;font-size:12px;font-weight:850;color:#596577;margin:10px 0 5
 <script>
 const STORAGE='reisebookinger_v1';
 const TRIP_STORAGE='reise_trip_name_v1';
+const TRIP_IMAGE_STORAGE='reise_trip_image_v1';
 const seed=[];
 let tripName=localStorage.getItem(TRIP_STORAGE)||'THAILAND 2026–27';
 
@@ -238,8 +261,17 @@ let expenses=JSON.parse(localStorage.getItem('reise_expenses_v1')||'null') || []
 let parsed=[];
 
 function save(){localStorage.setItem(STORAGE,JSON.stringify(bookings));render()}
-function editTripName(){document.getElementById('tripNameInput').value=tripName;document.getElementById('tripModal').classList.add('show')}
-function saveTripName(){const v=document.getElementById('tripNameInput').value.trim();if(v){tripName=v;localStorage.setItem(TRIP_STORAGE,tripName);document.getElementById('tripNameDisplay').textContent=tripName}closeModal('tripModal')}
+function editTripName(){
+ document.getElementById('tripNameInput').value=tripName;
+ const p=document.getElementById('tripCoverPreview');
+ p.src=tripCover||''; p.classList.toggle('show',!!tripCover);
+ document.getElementById('tripModal').classList.add('show')
+}
+function compressImage(file,max=1400,quality=.78){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const scale=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);const x=c.getContext('2d');x.drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',quality))};im.onerror=reject;im.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
+function previewTripCover(input){const f=input.files&&input.files[0];if(!f)return;compressImage(f,1600,.8).then(data=>{document.getElementById('tripCoverPreview').src=data;document.getElementById('tripCoverPreview').classList.add('show');input.dataset.value=data})}
+function saveTripName(){const v=document.getElementById('tripNameInput').value.trim();if(v){tripName=v;localStorage.setItem(TRIP_STORAGE,tripName);document.getElementById('tripNameDisplay').textContent=tripName}
+ const input=document.getElementById('tripCoverInput'); if(input.dataset.value){tripCover=input.dataset.value;localStorage.setItem(TRIP_IMAGE_STORAGE,tripCover)}
+ const img=document.getElementById('tripCover');img.src=tripCover||'';img.classList.toggle('show',!!tripCover); closeModal('tripModal')}
 function nok(n){return new Intl.NumberFormat('nb-NO',{style:'currency',currency:'NOK',maximumFractionDigits:0}).format(n)}
 function d(s){return new Date(s+'T00:00:00')}
 function fmt(s){return d(s).toLocaleDateString('nb-NO',{day:'numeric',month:'short',year:'numeric'})}
@@ -357,12 +389,36 @@ function renderTotals(){
  document.getElementById('totalFlightCost').textContent=nok(flight);
  document.getElementById('totalTransportCost').textContent=nok(transport);
  document.getElementById('totalExpenseCost').textContent=nok(expense);
- const parts=[['Overnatting',stay,'#2f80ed'],['Fly',flight,'#27ae60'],['Transport',transport,'#f2994a'],['Andre utgifter',expense,'#9b59b6']];
+
+ // Hent kategoriene brukeren selv har lagt inn under «Andre utgifter».
+ const grouped={};
+ expenses.forEach(e=>{
+   const raw=(e.category||'Annet').trim()||'Annet';
+   const key=raw.toLocaleLowerCase('nb-NO');
+   if(!grouped[key]) grouped[key]={label:raw,value:0};
+   grouped[key].value += Number(e.price||0);
+ });
+ const expenseCats=Object.values(grouped).sort((a,b)=>b.value-a.value);
+ const palette=['#8b5cf6','#ec4899','#06b6d4','#f97316','#84cc16','#eab308','#14b8a6','#ef4444'];
+ let visibleCats=expenseCats;
+ let other=0;
+ if(expenseCats.length>8){
+   visibleCats=expenseCats.slice(0,7);
+   other=expenseCats.slice(7).reduce((s,x)=>s+x.value,0);
+   visibleCats.push({label:'Øvrige utgifter',value:other});
+ }
+ const parts=[['Overnatting',stay,'#2f80ed'],['Fly',flight,'#27ae60'],['Transport',transport,'#f2994a'],...visibleCats.map((x,i)=>[x.label,x.value,palette[i%palette.length]])];
  const nonzero=parts.filter(x=>x[1]>0);
  let angle=0, stops=[];
  nonzero.forEach(x=>{const a=total?x[1]/total*360:0;stops.push(`${x[2]} ${angle}deg ${angle+a}deg`);angle+=a});
  document.getElementById('pieChart').style.background=total?'conic-gradient('+stops.join(',')+')':'#e8edf4';
- document.getElementById('costLegend').innerHTML=parts.map(x=>`<div class="legend-row"><span><i class="dot" style="background:${x[2]}"></i>${x[0]}</span><strong>${nok(x[1])} · ${total?Math.round(x[1]/total*100):0}%</strong></div>`).join('');
+ document.getElementById('costLegend').innerHTML=parts.map(x=>`<div class="legend-row"><span><i class="dot" style="background:${x[2]}"></i>${esc(x[0])}</span><strong>${nok(x[1])} · ${total?Math.round(x[1]/total*100):0}%</strong></div>`).join('');
+
+ // Egen oversikt under grafen gjør mange kategorier lettere å lese enn en stor kakediagram-legende.
+ document.getElementById('expenseBreakdown').innerHTML = expenseCats.length ? `
+   <div class="breakdown-title">Andre utgifter · kategorier</div>
+   <div class="breakdown-grid">${expenseCats.map((x,i)=>`<div class="breakdown-item"><span><i class="dot" style="background:${palette[i%palette.length]}"></i>${esc(x.label)}</span><strong>${nok(x.value)}</strong></div>`).join('')}</div>
+ ` : '';
 }
 function renderFlights(){
  const total=flights.reduce((s,f)=>s+Number(f.price||0),0);
@@ -436,6 +492,7 @@ function render(){
    arr.forEach(b=>{
     const n=nights(b), perNight=n?b.price/n:0, week=perNight*7, mon=perNight*30.44;
     out+=`<div class="booking">
+      ${b.image?`<div class="booking-image-wrap"><img class="booking-image" src="${b.image}" alt="${esc(b.name)}"><span class="image-badge">📷 Reisebilde</span></div>`:''}
       <div class="booking-top"><div class="name">${esc(b.name)}</div><div class="price">${nok(perNight)}<span style="font-size:11px;font-weight:700;color:var(--muted)"> / natt</span></div></div>
       <div class="dates">${fmt(b.start)} → ${fmt(b.end)}</div>
       <div class="actual-label">Faktisk pris for bookingen</div>
@@ -462,19 +519,22 @@ function render(){
  renderExpenses();
  renderTotals();
 }
+function resetBookingImage(){currentBookingImage='';const input=document.getElementById('bookingImageInput');if(input){input.value='';delete input.dataset.value}const p=document.getElementById('bookingImagePreview');p.src='';p.classList.remove('show')}
+function previewBookingImage(input){const f=input.files&&input.files[0];if(!f)return;compressImage(f,1400,.78).then(data=>{currentBookingImage=data;input.dataset.value=data;const p=document.getElementById('bookingImagePreview');p.src=data;p.classList.add('show')})}
 function openAdd(){
  document.getElementById('formTitle').textContent='Ny booking'; document.getElementById('editId').value='';
  ['name','price','place','note','start','end'].forEach(x=>document.getElementById(x).value='');
- document.getElementById('bookingModal').classList.add('show');
+ resetBookingImage(); document.getElementById('bookingModal').classList.add('show');
 }
 function editBooking(id){
  const b=bookings.find(x=>x.id===id); if(!b)return;
  document.getElementById('formTitle').textContent='Rediger booking'; document.getElementById('editId').value=id;
  ['name','start','end','price','place','note'].forEach(x=>document.getElementById(x).value=b[x]??'');
+ currentBookingImage=b.image||''; const p=document.getElementById('bookingImagePreview');p.src=currentBookingImage||'';p.classList.toggle('show',!!currentBookingImage);
  document.getElementById('bookingModal').classList.add('show');
 }
-function saveBooking(){
- const b={id:document.getElementById('editId').value||crypto.randomUUID(),name:document.getElementById('name').value.trim(),start:document.getElementById('start').value,end:document.getElementById('end').value,price:Number(document.getElementById('price').value||0),place:document.getElementById('place').value.trim(),note:document.getElementById('note').value.trim()};
+async function saveBooking(){
+ const b={id:document.getElementById('editId').value||crypto.randomUUID(),name:document.getElementById('name').value.trim(),start:document.getElementById('start').value,end:document.getElementById('end').value,price:Number(document.getElementById('price').value||0),place:document.getElementById('place').value.trim(),note:document.getElementById('note').value.trim(),image:currentBookingImage||''};
  if(!b.name||!b.start||!b.end||b.end<=b.start){alert('Fyll inn hotell, datoer og en gyldig periode.');return}
  const idx=bookings.findIndex(x=>x.id===b.id); if(idx>=0) bookings[idx]=b; else bookings.push(b);
  save(); closeModal('bookingModal');
@@ -584,7 +644,7 @@ function addParsed(){
  save(); closeModal('uploadModal'); alert('Bookingene er lagt til. Kontroller oversikten og eventuelle hull.');
 }
 function exportData(){
- const payload={version:3,bookings,flights,transports,expenses,exportedAt:new Date().toISOString()};
+ const payload={version:4,tripName,tripCover,bookings,flights,transports,expenses,exportedAt:new Date().toISOString()};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='reisebookinger-backup.json';a.click();
  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
@@ -598,6 +658,8 @@ function importData(file){
    if(Array.isArray(x)){
      bookings=x; flights=[]; transports=[]; expenses=[];
    } else if(x && Array.isArray(x.bookings)){
+     if(x.tripName){tripName=x.tripName;localStorage.setItem(TRIP_STORAGE,tripName)}
+     if(x.tripCover){tripCover=x.tripCover;localStorage.setItem(TRIP_IMAGE_STORAGE,tripCover)}
      bookings=x.bookings;
      flights=Array.isArray(x.flights)?x.flights:[];
      transports=Array.isArray(x.transports)?x.transports:[];
@@ -608,6 +670,7 @@ function importData(file){
    localStorage.setItem('reise_transport_v2',JSON.stringify(transports));
    localStorage.setItem('reise_expenses_v1',JSON.stringify(expenses));
    document.getElementById('tripNameDisplay').textContent=tripName;
+const initialCover=document.getElementById('tripCover'); initialCover.src=tripCover||''; initialCover.classList.toggle('show',!!tripCover);
 render();
    alert('Data importert: '+bookings.length+' overnattinger, '+flights.length+' flyreiser og '+transports.length+' transportposter og '+expenses.length+' andre utgifter.');
   }catch(e){alert('Kunne ikke importere filen. Velg en gyldig Reisebookinger-backup (.json).')}
@@ -615,6 +678,7 @@ render();
  r.readAsText(file);
 }
 document.getElementById('tripNameDisplay').textContent=tripName;
+const initialCover=document.getElementById('tripCover'); initialCover.src=tripCover||''; initialCover.classList.toggle('show',!!tripCover);
 render();
 </script>
 <script>
