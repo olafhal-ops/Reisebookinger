@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#063b36">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>SmileyOh — Travel. Spend. Smile.</title>
 <style>
 :root{--navy:#063b36;--navy2:#0b5149;--blue:#16b8b0;--blue2:#e7fbf9;--teal:#27c8bf;--green:#2caf69;--orange:#f4a340;--purple:#9a63c7;--red:#c65353;--bg:#f4f6f1;--card:#fffdfa;--text:#12322f;--muted:#70807c;--line:#e3e7df;--shadow:0 12px 30px rgba(9,53,48,.09)}
@@ -95,6 +98,7 @@ function renderTotals(){const cats=[['Overnatting',bookings.reduce((s,b)=>s+Numb
 function exportProfile(){const payload={format:'ReiseKlar',version:2,exportedAt:new Date().toISOString(),tripName:localStorage.getItem(K.name)||$('tripName').textContent,tripImage:'smileyoh-logo.png',bookings,flights,transports,expenses};const blob=new Blob([JSON.stringify(payload)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=((payload.tripName||'reiseprofil').replace(/[^a-z0-9æøå ]/gi,'').trim().replace(/\s+/g,'-')||'reiseprofil')+'.reiseklar.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 $('importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||!Array.isArray(d.bookings))throw new Error('Ugyldig fil');if(!confirm('Importere denne reisen? Dette erstatter dataene som ligger lokalt i appen.'))return;bookings=d.bookings||[];flights=d.flights||[];transports=d.transports||[];expenses=d.expenses||[];localStorage.setItem(K.book,JSON.stringify(bookings));localStorage.setItem(K.flight,JSON.stringify(flights));localStorage.setItem(K.transport,JSON.stringify(transports));localStorage.setItem(K.expense,JSON.stringify(expenses));if(d.tripName){localStorage.setItem(K.name,d.tripName);$('tripName').textContent=d.tripName}render();alert('Profilen er importert – bilder og data er med.')}catch(err){alert('Kunne ikke importere filen.')}};r.readAsText(f);e.target.value=''})
 function findBooking(a,b){window.open(`https://www.booking.com/searchresults.html?checkin=${a}&checkout=${b}`,'_blank')}
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {})); }
 render();
 </script>
 </body></html>
