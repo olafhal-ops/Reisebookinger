@@ -1,24 +1,20 @@
 {
   "name": "SmileyOh — Travel. Spend. Smile.",
   "short_name": "SmileyOh",
-  "description": "Din komplette reiseoversikt for booking, fly, transport og utgifter.",
   "start_url": "./",
-  "scope": "./",
   "display": "standalone",
-  "background_color": "#f7f5ef",
-  "theme_color": "#102d2a",
+  "background_color": "#f4f6f1",
+  "theme_color": "#063b36",
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
