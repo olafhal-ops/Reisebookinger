@@ -4,20 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b63ce">
-<title>Reisebookinger – oversikt</title>
+<title>ReiseKlar – reiseoversikt</title>
 <style>
 :root{
-  --blue:#0b63ce; --blue2:#eaf3ff; --green:#16834a; --green2:#eaf8f0;
-  --red:#c83b3b; --red2:#fff0f0; --text:#142033; --muted:#657184;
-  --bg:#f4f7fb; --card:#fff; --border:#dfe6ef; --shadow:0 6px 22px rgba(24,43,72,.08);
+  --blue:#1468d5; --blue2:#edf5ff; --green:#18865a; --green2:#eaf8f1;
+  --red:#b94b4b; --red2:#fff5f4; --text:#172236; --muted:#6d7888;
+  --bg:#f5f7fa; --card:#fff; --border:#e4e9f0; --shadow:0 8px 28px rgba(25,40,65,.07);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text)}
-header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,#0758bb,#1475df);color:#fff;padding:16px 16px 14px;box-shadow:0 2px 12px #0002}
-h1{font-size:22px;margin:0 0 3px}.sub{opacity:.86;font-size:13px}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(145deg,#0d5fc8,#1976e5);color:#fff;padding:15px 16px 16px;box-shadow:0 3px 18px #0b3d7b22}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:10px}.brand-icon{font-size:25px}.brand-title{font-size:19px;font-weight:850;letter-spacing:-.2px}.trip-name{display:flex;align-items:center;gap:6px;margin-top:6px}.trip-name strong{font-size:16px;letter-spacing:.1px}.trip-edit{background:#ffffff1f;color:#fff;border:1px solid #ffffff44;padding:5px 8px;border-radius:9px;font-size:11px}.sub{opacity:.82;font-size:12px;margin-top:3px}
 main{max-width:920px;margin:auto;padding:14px 12px 80px}
-.tabs{display:flex;background:#fff;border:1px solid var(--border);border-radius:14px;padding:4px;margin-bottom:12px;box-shadow:var(--shadow)}
-.tab{flex:1;border:0;background:transparent;color:var(--muted);padding:11px 10px;border-radius:10px;font-weight:800;font-size:14px}
+.tabs{display:flex;gap:3px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:4px;margin-bottom:14px;box-shadow:var(--shadow);overflow-x:auto}.tab{flex:1 0 auto;border:0;background:transparent;color:var(--muted);padding:10px 12px;border-radius:11px;font-weight:800;font-size:13px}.tab.active{background:var(--blue);color:#fff}
 .tab.active{background:var(--blue);color:#fff}
 .chart-wrap{display:flex;justify-content:center;align-items:center;padding:10px 0}
 .pie{width:min(290px,78vw);height:min(290px,78vw);border-radius:50%;position:relative}
@@ -28,23 +27,16 @@ main{max-width:920px;margin:auto;padding:14px 12px 80px}
 .flight{background:#fff;border:1px solid var(--border);border-radius:15px;padding:14px;margin-bottom:9px;box-shadow:0 2px 9px #182b4808}
 .flight-route{display:flex;align-items:center;gap:8px;font-size:19px;font-weight:850}
 .flight-arrow{color:var(--blue)} .flight-price{font-size:17px;font-weight:850;white-space:nowrap}
-.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
-.metric{font-size:25px;font-weight:800}.label{font-size:12px;color:var(--muted);margin-top:3px}
-.toolbar{display:flex;gap:8px;overflow:auto;padding:2px 0 12px}
-button,.filebtn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap}
+.cards{display:grid;grid-template-columns:1.15fr .85fr;gap:10px;margin-bottom:12px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:15px;box-shadow:var(--shadow)}.metric{font-size:25px;font-weight:850;letter-spacing:-.4px}.label{font-size:12px;color:var(--muted);margin-top:4px}.stat-accent{background:linear-gradient(145deg,#fff,#f8fbff)}
+.toolbar{display:flex;gap:8px;overflow:auto;padding:2px 0 14px}button,.filebtn{border:0;border-radius:12px;padding:11px 14px;font-weight:750;font-size:14px;cursor:pointer;white-space:nowrap}.primary{box-shadow:0 5px 14px #1468d526}
 .primary{background:var(--blue);color:#fff}.secondary{background:#fff;border:1px solid var(--border);color:var(--text)}
 .danger{background:var(--red2);color:var(--red)}
 .section-title{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 9px}
 h2{font-size:17px;margin:0}.small{font-size:12px;color:var(--muted)}
-.booking{position:relative;background:#fff;border:1px solid var(--border);border-radius:15px;padding:14px;margin-bottom:9px;box-shadow:0 2px 9px #182b4808}
-.booking-top{display:flex;justify-content:space-between;gap:10px}.name{font-weight:800;font-size:15px}.price{font-weight:800;white-space:nowrap}
-.dates{color:var(--blue);font-weight:700;margin:5px 0;font-size:14px}
-.meta{display:flex;gap:6px;flex-wrap:wrap}.pill{background:#f0f4f8;border-radius:999px;padding:5px 8px;font-size:12px;color:#435168}
+.booking{position:relative;background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:10px;box-shadow:0 5px 18px #182b4808}.booking-top{display:flex;justify-content:space-between;gap:12px}.name{font-weight:850;font-size:16px;letter-spacing:-.1px}.price{font-weight:850;font-size:17px;white-space:nowrap}.dates{color:var(--blue);font-weight:800;margin:6px 0 9px;font-size:14px}.actual-price{font-size:20px;font-weight:900;margin:2px 0 9px;letter-spacing:-.3px}.actual-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:800}.meta{display:flex;gap:6px;flex-wrap:wrap}.pill{background:#f3f6f9;border-radius:999px;padding:6px 9px;font-size:12px;color:#46536a}.price-toggle{margin-top:9px;color:var(--muted);font-size:12px;font-weight:750;cursor:pointer}.price-details{display:none;margin-top:8px;padding:10px 11px;border-radius:12px;background:#f7f9fc;font-size:12px;color:#4b586b}.price-details.show{display:block}.price-details div{display:flex;justify-content:space-between;padding:3px 0}
 .actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.actions button{padding:7px 9px;font-size:12px}
-.gap{border:1px dashed #e1a2a2;background:var(--red2);border-radius:14px;padding:11px 13px;margin:8px 0;color:#8e2828}
-.gap strong{font-size:14px}.gap span{font-size:12px}
-.month{margin-bottom:12px}.monthhead{display:flex;justify-content:space-between;padding:10px 12px;background:#edf4fc;border-radius:12px;font-weight:800}
+.gap{border:1px solid #f0d0cd;background:linear-gradient(145deg,#fff8f7,#fff4f2);border-radius:16px;padding:13px 14px;margin:8px 0;color:#82413d}.gap strong{font-size:14px}.gap-date{font-size:17px;font-weight:850;margin:5px 0}.gap-n{font-size:12px;color:#94625e}.gap-actions{margin-top:10px}
+.month{margin-bottom:12px}.monthhead{display:flex;justify-content:space-between;padding:10px 12px;background:#edf4fc;border-radius:13px;font-weight:850}
 .monthbody{padding-top:8px}
 .empty{padding:22px;text-align:center;color:var(--muted)}
 .modal{position:fixed;inset:0;background:#07132288;display:none;align-items:flex-end;z-index:30}
@@ -67,12 +59,17 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 5px;b
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Reisebookinger">
+<meta name="apple-mobile-web-app-title" content="ReiseKlar">
 </head>
 <body>
 <header>
-  <h1>✈️ Reisebookinger</h1>
-  <div class="sub">Bookinger · ledige netter · kostnad · prisnivå</div>
+  <div class="header-row">
+    <div>
+      <div class="brand"><span class="brand-icon">✈️</span><span class="brand-title">ReiseKlar</span></div>
+      <div class="trip-name"><strong id="tripNameDisplay">THAILAND 2026–27</strong><button class="trip-edit" onclick="editTripName()">✏️ Endre</button></div>
+      <div class="sub">Bookinger · fly · transport · kostnader</div>
+    </div>
+  </div>
 </header>
 
 <main>
@@ -84,7 +81,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 5px;b
   </div>
   <section id="staysTab">
   <div class="cards">
-    <div class="card"><div class="metric" id="totalCost">–</div><div class="label">Totalt booket</div></div>
+    <div class="card stat-accent"><div class="metric" id="totalCost">–</div><div class="label">Totalt booket</div></div>
     <div class="card"><div class="metric" id="totalNights">–</div><div class="label">Bookede netter</div></div>
     <div class="card"><div class="metric" id="gapNights">–</div><div class="label">Ledige netter mellom bookinger</div></div>
     <div class="card"><div class="metric" id="avgNight">–</div><div class="label">Snittpris per natt</div></div>
@@ -167,6 +164,14 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 5px;b
  </div>
 </div>
 
+<div class="modal" id="tripModal" onclick="if(event.target===this)closeModal('tripModal')">
+ <div class="sheet">
+  <div class="section-title" style="margin-top:0"><h2>Reisenavn</h2><button class="secondary" onclick="closeModal('tripModal')">✕</button></div>
+  <label>Navn på reisen</label><input id="tripNameInput" maxlength="40" placeholder="THAILAND 2026–27">
+  <div class="form-actions"><button class="secondary" onclick="closeModal('tripModal')">Avbryt</button><button class="primary" onclick="saveTripName()">Lagre</button></div>
+ </div>
+</div>
+
 <div class="modal" id="bookingModal" onclick="if(event.target===this)closeModal('bookingModal')">
  <div class="sheet">
   <div class="section-title" style="margin-top:0"><h2 id="formTitle">Ny booking</h2><button class="secondary" onclick="closeModal('bookingModal')">✕</button></div>
@@ -203,7 +208,9 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 5px;b
 
 <script>
 const STORAGE='reisebookinger_v1';
+const TRIP_STORAGE='reise_trip_name_v1';
 const seed=[];
+let tripName=localStorage.getItem(TRIP_STORAGE)||'THAILAND 2026–27';
 
 
 let bookings=JSON.parse(localStorage.getItem(STORAGE)||'null') || [];
@@ -212,6 +219,8 @@ let transports=JSON.parse(localStorage.getItem('reise_transport_v2')||'null') ||
 let parsed=[];
 
 function save(){localStorage.setItem(STORAGE,JSON.stringify(bookings));render()}
+function editTripName(){document.getElementById('tripNameInput').value=tripName;document.getElementById('tripModal').classList.add('show')}
+function saveTripName(){const v=document.getElementById('tripNameInput').value.trim();if(v){tripName=v;localStorage.setItem(TRIP_STORAGE,tripName);document.getElementById('tripNameDisplay').textContent=tripName}closeModal('tripModal')}
 function nok(n){return new Intl.NumberFormat('nb-NO',{style:'currency',currency:'NOK',maximumFractionDigits:0}).format(n)}
 function d(s){return new Date(s+'T00:00:00')}
 function fmt(s){return d(s).toLocaleDateString('nb-NO',{day:'numeric',month:'short',year:'numeric'})}
@@ -324,6 +333,18 @@ function renderFlights(){
  </div>`).join('') || '<div class="card empty">Ingen flyreiser lagt inn ennå.</div>';
 }
 
+function findBooking(place,start,end){
+  const p=(place||'').trim();
+  const params=new URLSearchParams();
+  if(p) params.set('ss',p);
+  if(start) params.set('checkin',start);
+  if(end) params.set('checkout',end);
+  params.set('group_adults','2');
+  params.set('no_rooms','1');
+  window.open('https://www.booking.com/searchresults.html?'+params.toString(),'_blank');
+}
+function togglePriceDetails(id){const el=document.getElementById('price-'+id);if(el)el.classList.toggle('show')}
+
 function render(){
  sort();
  const total=bookings.reduce((s,b)=>s+Number(b.price||0),0);
@@ -341,9 +362,13 @@ function render(){
    const days=Math.round((d(bookings[i].start)-d(bookings[i-1].end))/86400000);
    if(days>0) gaps.push({start:bookings[i-1].end,end:bookings[i].start,n:days});
  }
- document.getElementById('gaps').innerHTML=gaps.length?gaps.map(g=>`
-   <div class="gap"><strong>⚠ Ledig periode</strong><br>
-   <span>${fmt(g.start)} → ${fmt(g.end)}</span></div>`).join(''):'<div class="empty">Ingen hull mellom bookingene 🎉</div>';
+ document.getElementById('gaps').innerHTML=gaps.length?gaps.map(g=>{
+   const prev=bookings.find(b=>b.end===g.start);
+   return `<div class="gap"><strong>⚠ Ledig periode</strong>
+   <div class="gap-date">${fmt(g.start)} → ${fmt(g.end)}</div>
+   <div class="gap-n">${g.n} netter uten booking</div>
+   <div class="gap-actions"><button class="primary" onclick="findBooking('${esc(prev?.place||'Thailand')}', '${g.start}', '${g.end}')">🔎 Finn booking</button></div></div>`;
+ }).join(''):'<div class="empty">Ingen hull mellom bookingene 🎉</div>';
 
  const months={};
  bookings.forEach(b=>{
@@ -357,18 +382,23 @@ function render(){
    const cost=arr.reduce((s,b)=>s+Number(b.price||0),0);
    out+=`<div class="month"><div class="monthhead"><span>${m[0].toUpperCase()+m.slice(1)}</span><span>${nok(cost)}</span></div><div class="monthbody">`;
    arr.forEach(b=>{
-    const n=nights(b), week=b.price/n*7, mon=b.price/n*30.44;
+    const n=nights(b), perNight=n?b.price/n:0, week=perNight*7, mon=perNight*30.44;
     out+=`<div class="booking">
-      <div class="booking-top"><div class="name">${esc(b.name)}</div><div class="price">${nok(b.price)}</div></div>
+      <div class="booking-top"><div class="name">${esc(b.name)}</div><div class="price">${nok(perNight)}<span style="font-size:11px;font-weight:700;color:var(--muted)"> / natt</span></div></div>
       <div class="dates">${fmt(b.start)} → ${fmt(b.end)}</div>
+      <div class="actual-label">Faktisk pris for bookingen</div>
+      <div class="actual-price">${nok(b.price)}</div>
       <div class="meta">
-       <span class="pill">🛏 ${n} netter</span>
-       <span class="pill">Natt: ${nok(b.price/n)}</span>
-       <span class="pill">Uke: ${nok(week)}</span>
-       <span class="pill">30 dager: ${nok(mon)}</span>
+       <span class="pill">🛏 ${n} ${n===1?'natt':'netter'}</span>
        ${b.place?`<span class="pill">📍 ${esc(b.place)}</span>`:''}
       </div>
-      ${b.note?`<div class="small" style="margin-top:7px">${esc(b.note)}</div>`:''}
+      <div class="price-toggle" onclick="togglePriceDetails('${b.id}')">▾ Vis prisnivå</div>
+      <div class="price-details" id="price-${b.id}">
+        <div><span>Per natt</span><strong>${nok(perNight)}</strong></div>
+        <div><span>7 netter</span><strong>${nok(week)}</strong></div>
+        <div><span>30 dager</span><strong>${nok(mon)}</strong></div>
+      </div>
+      ${b.note?`<div class="small" style="margin-top:8px">${esc(b.note)}</div>`:''}
       <div class="actions"><button class="primary" onclick="shareBooking('${b.id}')">↗ Del</button><button class="secondary" onclick="editBooking('${b.id}')">Rediger</button><button class="danger" onclick="removeBooking('${b.id}')">Slett</button></div>
     </div>`;
    });
@@ -408,7 +438,7 @@ function shareBooking(id){
  ];
  if(b.place) lines.push('📍 '+b.place);
  if(b.note) lines.push('📝 '+b.note);
- lines.push('', 'Delt fra Reisebookinger ✈️');
+ lines.push('', 'Delt fra ReiseKlar ✈️');
  const text=lines.join('\n');
  if(navigator.share){
    navigator.share({title:'Overnatting – '+(b.name||'Reisebookinger'),text}).catch(()=>{});
@@ -522,12 +552,14 @@ function importData(file){
    localStorage.setItem(STORAGE,JSON.stringify(bookings));
    localStorage.setItem('reise_fly_v2',JSON.stringify(flights));
    localStorage.setItem('reise_transport_v2',JSON.stringify(transports));
-   render();
+   document.getElementById('tripNameDisplay').textContent=tripName;
+render();
    alert('Data importert: '+bookings.length+' overnattinger, '+flights.length+' flyreiser og '+transports.length+' transportposter.');
   }catch(e){alert('Kunne ikke importere filen. Velg en gyldig Reisebookinger-backup (.json).')}
  };
  r.readAsText(file);
 }
+document.getElementById('tripNameDisplay').textContent=tripName;
 render();
 </script>
 <script>

@@ -1,6 +1,6 @@
 {
-  "name": "Reisebookinger",
-  "short_name": "Reisebookinger",
+  "name": "ReiseKlar",
+  "short_name": "ReiseKlar",
   "description": "Oversikt over overnatting, fly, transport og totalkostnader.",
   "start_url": "./",
   "scope": "./",
